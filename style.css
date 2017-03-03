@@ -1,0 +1,127 @@
+.header_about{
+    width: 100vw;
+    height: 30vh;
+}
+.my_image>img{
+    width: 200px;
+    height: auto;
+}
+body{
+    margin: 0;
+    padding:0;
+    background: url("images/kamejpg.jpg") no-repeat;
+    background-size: cover;
+}
+header{
+    height: 20vh;
+    background: url("images/dbzheader.png") no-repeat;
+    background-size: contain;
+}
+li{
+    display: inline-block;
+    margin: 0 20px;
+}
+nav ul{
+    float: right;
+}
+header>h1{
+    margin: 0;
+    text-align: center;
+    height: 100%;
+    background-image: url(images/h1font.png);
+    background-repeat: no-repeat;
+
+}
+.game_body{
+    width: 100%;
+    height: 90vh;
+}
+.sidebar{
+    width: 25%;
+    height: 100%;
+    float: left;
+    /*background-color: #1dc116;*/
+    background: url("images/dbzside.png") no-repeat;
+    background-size: contain;
+    background-position: -5px 100px;
+}
+.game-area{
+    width: 75%;
+    height: 100%;
+    float: left;
+}
+/*.clearfix{*/
+    /*overflow: auto;*/
+/*}*/
+/*.clearfix::after {*/
+    /*content: "";*/
+    /*clear: both;*/
+    /*display: table;*/
+/*}*/
+.card{
+    /*border: 2px solid black;*/
+    /*border-radius: 4px;*/
+    width: 14%;
+    height: 35%;
+    float: left;
+    position: relative;
+    margin: 10px;
+
+}
+.front, .back{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+
+}
+.back {
+    background: url("images/card_back.jpg") no-repeat;
+    background-size: 100% 100%;               /*allows me to take up 100% of the div*/
+    border-radius: 15px;
+}
+/*test*/
+.front{
+    /*background-image: url("images/card_1.png");*/
+    background-size: contain;                /*keeps my front image within the h/w parameters without stretching it out*/
+    background-repeat: no-repeat;
+    background-position: center;
+
+}
+.one-pair{
+    background-image: url("images/card_1.png");
+    /*background-size: contain;*/
+    /*background-repeat: no-repeat;*/
+    /*background-position: center;*/
+}
+.two-pair{
+    background-image: url("images/card_2.png");
+    /*background-size: contain;*/
+    /*background-repeat: no-repeat;*/
+    /*background-position: center;*/
+}
+.three-pair{
+    background-image: url("images/card_5.png");
+}
+.four-pair{
+    background-image: url("images/card_6finalform.png");
+}
+.five-pair{
+    background-image: url("images/card7.png");
+}
+.six-pair{
+    background-image: url("images/card8.png");
+}
+.sev-pair{
+    background-image: url("images/card9.png");
+}
+.eight-pair{
+    background-image: url("images/card10.png");
+}
+.nine-pair{
+    background-image: url("images/card11.png");
+}
+.flipped{
+    display: none;
+
+}
+
