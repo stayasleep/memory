@@ -1,35 +1,65 @@
 /**
  * Created by Bri on 2/28/2017.
  */
+//v0.5 global variables
 var first_card_clicked  = null;
 var second_card_clicked=null;
-var total_possible_matches = 9; //change to 9
-var match_counter = 0;
+var total_possible_matches = 9;
+var match_counter=0;
+//v1.0 global variables
+var attempts=0;
+var accuracy=0;
+var games_played=0;
 
-$(document).ready(initializeGame);
-
-function initializeGame(){
+// $(document).ready(initializeGame);
+$(document).ready(function(){
     $('.back').click(handleClick);
-    console.log("im checking to see if im initialized and calling handleClick");
+    // games_played++;
+    $('.reset').click(resetAll);
+});
+function resetAll(){
+    resetStats();
+    // games_played++;
 }
-
+// function initializeGame(){
+//     $('.back').click(handleClick);
+//     games_played=1;
+//     // $('.reset').click(resetStats);
+//     console.log("this should log out first");
+// }
 function handleClick(){
     cardClick(this);
-    console.log("this clicked div sets the element to 'this', gets printed after cC runs");
+    displayStats();
+    console.log("handleclick will log out after the cardClick function");
 }
-
+// function resetAll(){
+//     resetStats;
+// }
+//Display updated statistics for current game
+function displayStats(){
+        var element = document.querySelector(".attempts .value");
+        element.innerHTML=attempts;
+        var accurate = document.querySelector(".accuracy .value");
+        accurate.innerHTML=accuracy;
+        var played = document.querySelector(".games-played .value");
+        played.innerHTML=games_played;
+};
 function cardClick(card_back){
     flipCard(card_back);
     if (first_card_clicked===null){
         first_card_clicked = card_back;
-        console.log("first card clicked is null, value now set!");
+        console.log("value of first card clicked is no longer null");
     } else{
         second_card_clicked = card_back;
-        console.log("second card is clicked and value is set!");
+        attempts+=1;
+        accuracy = match_counter/attempts;
+        console.log(attempts);
+        console.log("value of second card clicked is no longer null");
         var first_card = $(first_card_clicked).parent().find('.front').css("background-image");       //changed first_card_clicked
         var second_card = $(second_card_clicked).parent().find('.front').css("background-image"); //second_card_clicked
         if (first_card===second_card){  //first_c_c === sec_c_c
             match_counter++;
+            accuracy = match_counter/attempts;
             first_card_clicked = null;
             second_card_clicked = null;
             console.log("these cards match...");
@@ -37,19 +67,9 @@ function cardClick(card_back){
                 alert("Congratulations! You Win!");
             }
         } else {
-            // setTimeout(returnCard,0);
-           // returnCard(first_card_clicked,second_card_clicked);
-            // returnCard(second_card_clicked);
-            // first_card_clicked = null;
-            // second_card_clicked = null;
-            // var reset_first = first_card_clicked.slice(0,first_card_clicked.length);
-            // var reset_second = second_card_clicked.slice(0, second_card_clicked.length);
             setTimeout(function(){
                 $(first_card_clicked).removeClass("flipped");
                 $(second_card_clicked).removeClass("flipped");
-                // if ($('div').hasClass('flipped')){
-                //     $('div').removeClass('flipped');
-                // }
                 first_card_clicked=null;
                 second_card_clicked=null;
             }, 2000);
@@ -57,22 +77,16 @@ function cardClick(card_back){
         }
     }
 }
-//this would add a class to this div that was set to this...and that class would tell it to display:none , so the front card img shows now
 function flipCard(card_back){
     $(card_back).addClass('flipped');
 }
-// setTimeout(function(){
-//     returnCard();
-// }, 2000);
-// function returnCard(card_back){
-//     function returnCard(first,second){
-//         $(this).removeClass("flipped");
-//         $(this).removeClass("flipped");
-//         first_card_clicked=null;
-//         second_card_clicked=null;
-//         console.log("removed");
-//     // $(this).removeClass('flipped');  //thi
-// }
 
-
-
+function resetStats(){
+    accuracy = 0;
+    attempts = 0;
+    match_counter = 0;
+    games_played++;
+    // games_played+=1;
+    displayStats();
+};
+var array=[getImage]
