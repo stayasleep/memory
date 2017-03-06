@@ -89,4 +89,37 @@ function resetStats(){
     // games_played+=1;
     displayStats();
 };
-var array=[getImage]
+//to work on for later
+//collects node list and stores it into an empty array,
+// storeCards();
+// var array_cards=[];
+// var card_collect=document.getElementsByClassName("front");
+// function storeCards(){
+//     for (var i=0; i<card_collect.length;i++){
+//         var temp=card_collect[i];
+//         console.log(temp);
+//         array_cards.push(temp);
+//     }
+//     randomArray();
+// };
+// //takes in the array, randomly selects an index and adds it into a new array, then removes it from orig array
+// var return_cards=[];
+// function randomArray(){
+//     for (var i=0;i<array_cards.length;){
+//         var x = Math.floor(Math.random()*array_cards.length);
+//         return_cards.push(array_cards[x]);
+//         array_cards.splice(x,1);
+//         console.log(return_cards);
+//     }
+// };
+// removeReplaceAdd();
+// //remove (or try replace method?) old node, add it on to the class back...but now it overlays on the cars back-_-
+// function removeReplaceAdd(){
+//     var x = document.getElementsByClassName('back'); //should be 18 elements
+//     while (card_collect.length>0){
+//         card_collect[0].parentNode.removeChild(card_collect[0]);
+//     }
+//     for(var i=0;i<return_cards.length;i++){
+//         x[i].parentNode.appendChild(return_cards[i]); //appends the card front to the parent node of class back
+//     }
+// };
