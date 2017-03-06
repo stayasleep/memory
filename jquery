@@ -1,9 +1,0 @@
-var firstCardCliked  = null;
-var secondCardClicked=null;
-
-$(document).ready(initializeGame);
-
-function initializeGame(){
-    $('.back').click();
-    console.log("im checking to see if im clicked");
-}
