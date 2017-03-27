@@ -1,5 +1,5 @@
 body{
-    background-image: url("images/kamejpg.jpg");
+    background-image: url("image/kamejpg.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     color: black;
@@ -24,7 +24,7 @@ body{
     height: 100%;
 }
 .radar{
-    background-image: url("images/dbzside.png");
+    background-image: url("image/dbzside.png");
     background-repeat: no-repeat;
     background-size: contain;
     height: 40%;
@@ -33,7 +33,7 @@ body{
     bottom: -40px;
 }
 .logo{
-    background-image: url("images/dbzheader.png");
+    background-image: url("image/dbzheader.png");
     background-repeat: no-repeat;
     background-size: contain;
     height: 100%;
