@@ -2,24 +2,28 @@
 var get_card_class = document.getElementsByClassName('card');  //consider changing name to card_array
 var card_class_mixer=[]; //puts the 18 classes into an array
 var random_class=[];     //18 classes and randomly returned
-//v0.5 global variables
 var first_card_clicked  = null;
 var second_card_clicked=null;
 var total_possible_matches = 9;
 var match_counter=0;
-//v1.0 global variables
 var attempts=0;
 var accuracy=0;
 var games_played=0;
-//Once document is ready...
-$(document).ready(initializeGame);
+
+document.addEventListener("DOMContentLoaded",ready);
+function ready(){
+    initializeGame();
+}
 //Randomly generate the div position, attach click handlers and display stats
 function initializeGame() {
     createAddRandomDivs();
-    $('.back').click(handleClick);
+    var classname = document.getElementsByClassName('back');
+    for (var i=0;i<classname.length;i++){
+        classname[i].addEventListener('click',handleClick)
+    };
+    document.getElementById('reset').addEventListener('click',resetGame);
     games_played=1;
-    $('.reset').click(resetGame);
-};
+}
 //Take the node list of classes, push them into a new array randomly and then assign each a child with css prop attached
 function createAddRandomDivs(){
     for (var j=0; j<get_card_class.length;j++){
@@ -60,7 +64,6 @@ function createAddRandomDivs(){
 function handleClick(){
     cardClick(this);
     displayStats();
-    console.log("handleclick will log out after the cardClick function");
 }
 //grabs value of current stat and places the html inside the corresponding variable, occurs with each click
 function displayStats(){
@@ -77,34 +80,46 @@ function cardClick(card_back){
     flipCard(card_back);
     if (first_card_clicked===null){
         first_card_clicked = card_back;
-        console.log("value of first card clicked is no longer null");
     } else{
         second_card_clicked = card_back;
         attempts+=1;
         accuracy =match_counter/attempts;
         console.log(attempts);
-        console.log("value of second card clicked is no longer null");
-        var first_card = $(first_card_clicked).parent().find('.front').css("background-image");       //changed first_card_clicked
-        var second_card = $(second_card_clicked).parent().find('.front').css("background-image"); //second_card_clicked
+        console.log("parent node",first_card_clicked.parentNode.childNodes[0].style.backgroundImage);
+        var first_card = first_card_clicked.parentNode.childNodes[0].style.backgroundImage;
+        var second_card = second_card_clicked.parentNode.childNodes[0].style.backgroundImage;
+        // var first_card = $(first_card_clicked).parent().find('.front').css("background-image");       //changed first_card_clicked
+        // var second_card = $(second_card_clicked).parent().find('.front').css("background-image"); //second_card_clicked
         if (first_card===second_card){  //first_c_c === sec_c_c
             match_counter++;
             accuracy = match_counter/attempts;
-            $(first_card_clicked).fadeOut();
-            $(second_card_clicked).fadeOut();
+            //these arent being called
+            // $(first_card_clicked).fadeOut();
+            // $(second_card_clicked).fadeOut();
+            //the arent being called end
             first_card_clicked = null;
             second_card_clicked = null;
-            console.log("these cards match...");
             if (match_counter === total_possible_matches){
                 alert("Congratulations! You Win!");
             }
         } else {
-            $('.back').off("click");
+            // $('.back').off("click")
+            var x=document.getElementsByClassName('back');
+            for(var i=0;i<x.length;i++){
+                x[i].removeEventListener('click',handleClick);
+            }
             setTimeout(function(){
-                $(first_card_clicked).removeClass("flipped");
-                $(second_card_clicked).removeClass("flipped");
+                // $(first_card_clicked).removeClass("flipped");
+                first_card_clicked.classList.remove("flipped");
+                // $(second_card_clicked).removeClass("flipped");
+                second_card_clicked.classList.remove('flipped');
                 first_card_clicked=null;
                 second_card_clicked=null;
-                $('.back').on("click",handleClick);
+                var y=document.getElementsByClassName('back');
+                for(var i=0;i<x.length;i++){
+                    y[i].addEventListener('click',handleClick);
+                }
+                // $('.back').on("click",handleClick);
             }, 2000);
             console.log("no match");
         }
@@ -112,7 +127,7 @@ function cardClick(card_back){
 }
 //When clicked, 'flip' the card back over to reveal what's underneath
 function flipCard(card_back){
-    $(card_back).addClass('flipped');
+    card_back.classList.add('flipped');
 }
 //Reset the board
 function resetStats(){
@@ -122,14 +137,17 @@ function resetStats(){
     games_played++;
     displayStats();
     card_class_mixer=[];
-    random_class=[]
+    random_class=[];
     removeOldDivs();
 };
 //things to happen for each game...reset stats (and board), apply dom elements, attach click
 function resetGame(){
     resetStats();
     createAddRandomDivs();
-    $('.back').click(handleClick);
+    var z=document.getElementsByClassName('back');
+    for(var i=0;i<x.length;i++){
+        z[i].addEventListener('click',handleClick);
+    }
 }
 function removeOldDivs() {
     var x = document.getElementsByClassName('front');
