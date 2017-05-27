@@ -22,6 +22,8 @@ body{
 /*Sidebar elements*/
 .sidebar{
     height: 100%;
+    display: flex;
+    flex-wrap: wrap;
 }
 .radar{
     background-image: url("image/dbzside.png");
@@ -29,22 +31,31 @@ body{
     background-size: contain;
     height: 40%;
     width:100%;
-    position: relative;
-    bottom: -40px;
+    /*position: relative;tonight*/
+    /*position: fixed;*/
+    /*bottom: -40px;tonight*/
+    align-self: flex-end;
+}
+.reset{
+    height: 10%;
 }
 .logo{
     background-image: url("image/dbzheader.png");
     background-repeat: no-repeat;
     background-size: contain;
-    height: 100%;
-    width: 100%;
+    /*height: 100%; tonight*/
+    height: 17vh;
+    width: 50%;
+    /*width: 100%;tonight*/
 }
 /*Card area and cards*/
 .game_area{
     height: 100%;
+    padding-right: 0; /*tonight*/
 }
 .card{
-    width: 10%;
+    /*width: 10%; tonight*/
+    width: 3em;
     height: 22%;
     float: left;
     margin: 10px;
@@ -114,9 +125,38 @@ body{
     padding-top: 70px;
     padding-bottom: 70px;
 }
+#alertBox{
+    display: none;
+}
+.ifSmall{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
 /*mobile*/
-@media screen and (max-width: 768px) {
-    body {
-        background-color: lightgreen;
+@media only screen
+    and (min-device-width: 320px)
+    and (max-device-width: 480px)
+    and (-webkit-min-device-pixel-ratio: 2)
+    and (orientation: portrait){
+
+    #alertBox{
+        display: block;
     }
 }
+@media screen and (max-width: 767px){
+    .game_area{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .card{
+        float: none;
+        margin: 0;
+    }
+    .logo{
+        height: 17vw;
+    }
+
+}
+
