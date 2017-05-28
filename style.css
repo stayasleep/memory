@@ -5,6 +5,9 @@ body{
     color: black;
     font-size: 2em;
 }
+.value{
+    border-bottom: 1px dotted black;
+}
 .label{
     color: black;
 }
@@ -24,6 +27,7 @@ body{
     height: 100%;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 .radar{
     background-image: url("image/dbzside.png");
@@ -46,6 +50,7 @@ body{
     /*height: 100%; tonight*/
     height: 17vh;
     width: 50%;
+    margin-left: 100px;
     /*width: 100%;tonight*/
 }
 /*Card area and cards*/
@@ -56,7 +61,7 @@ body{
 .card{
     /*width: 10%; tonight*/
     width: 3em;
-    height: 22%;
+    height: 20%;
     float: left;
     margin: 10px;
     position: relative;
@@ -139,10 +144,20 @@ body{
     and (max-device-width: 480px)
     and (-webkit-min-device-pixel-ratio: 2)
     and (orientation: portrait){
+    .checkRes{
+        height: 90vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .sizeP{
+        padding: 0 10px;
+    }
 
     #alertBox{
         display: block;
     }
+
 }
 @media screen and (max-width: 767px){
     .game_area{
@@ -154,9 +169,28 @@ body{
         float: none;
         margin: 0;
     }
+    .reset{
+        height: 3em;
+    }
     .logo{
         height: 17vw;
     }
 
 }
-
+@media screen and (min-width: 768px){
+    .game_area{
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .card{
+        float: none;
+    }
+    .ifSmall{
+        align-items: flex-end;
+    }
+    .reset{
+        height: 3em;
+    }
+}

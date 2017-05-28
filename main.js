@@ -86,7 +86,7 @@ function cardClick(card_back){
         attempts+=1;
         accuracy =match_counter/attempts;
         console.log(attempts);
-        console.log("parent node",first_card_clicked.parentNode.childNodes[0].style.backgroundImage);
+        // console.log("parent node",first_card_clicked.parentNode.childNodes[0].style.backgroundImage);
         var first_card = first_card_clicked.parentNode.childNodes[0].style.backgroundImage;
         var second_card = second_card_clicked.parentNode.childNodes[0].style.backgroundImage;
         // var first_card = $(first_card_clicked).parent().find('.front').css("background-image");       //changed first_card_clicked
@@ -146,7 +146,7 @@ function resetGame(){
     resetStats();
     createAddRandomDivs();
     var z=document.getElementsByClassName('back');
-    for(var i=0;i<x.length;i++){
+    for(var i=0;i<z.length;i++){
         z[i].addEventListener('click',handleClick);
     }
 }
@@ -178,13 +178,14 @@ function changePortrait(){
     _div1.appendChild(_div2);
 
     var _div3 = document.createElement("DIV");
-    _div3.className = "modal-content";
+    _div3.className = "modal-content checkRes";
     _div2.appendChild(_div3);
 
     var _div4 = document.createElement("DIV");
     _div4.className ="modal-body";
     var _p=document.createElement("P");
-    _p.innerHTML="Please change your to landscape mode to play the game";
+    _p.className="sizeP";
+    _p.innerHTML="This game is best played on larger screen resolutions.  Please change your phone's orientation to landscape before playing DBZ Memory Match."
     _div3.appendChild(_div4.appendChild(_p));
 
     document.getElementsByTagName("body")[0].appendChild(_div1);
