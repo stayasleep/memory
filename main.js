@@ -1,5 +1,4 @@
-//collect all parent card class divs which will hold our card front and back
-var get_card_class = document.getElementsByClassName('card');  //consider changing name to card_array
+var get_card_class = document.getElementsByClassName('card'); //collect all parent card class divs which will hold our card front and back
 var card_class_mixer=[]; //puts the 18 classes into an array
 var random_class=[];     //18 classes and randomly returned
 var first_card_clicked  = null;
@@ -29,14 +28,12 @@ function initializeGame() {
 function createAddRandomDivs(){
     for (var j=0; j<get_card_class.length;j++){
         var temp=get_card_class[j];
-        console.log(temp);
         card_class_mixer.push(temp);
     }
     for (var d=0;d<card_class_mixer.length;){
         var x = Math.floor(Math.random()*card_class_mixer.length);
         random_class.push(card_class_mixer[x]);
         card_class_mixer.splice(x,1);
-        console.log(random_class);
     }
     for (var i=0;i<random_class.length;i++){ //two loops length/2
         if (i<9){
@@ -85,13 +82,9 @@ function cardClick(card_back){
         second_card_clicked = card_back;
         attempts+=1;
         accuracy =match_counter/attempts;
-        console.log(attempts);
-        // console.log("parent node",first_card_clicked.parentNode.childNodes[0].style.backgroundImage);
         var first_card = first_card_clicked.parentNode.childNodes[0].style.backgroundImage;
         var second_card = second_card_clicked.parentNode.childNodes[0].style.backgroundImage;
-        // var first_card = $(first_card_clicked).parent().find('.front').css("background-image");       //changed first_card_clicked
-        // var second_card = $(second_card_clicked).parent().find('.front').css("background-image"); //second_card_clicked
-        if (first_card===second_card){  //first_c_c === sec_c_c
+        if (first_card===second_card){
             match_counter++;
             accuracy = match_counter/attempts;
             //these arent being called
@@ -104,15 +97,12 @@ function cardClick(card_back){
                 alert("Congratulations! You Win!");
             }
         } else {
-            // $('.back').off("click")
             var x=document.getElementsByClassName('back');
             for(var i=0;i<x.length;i++){
                 x[i].removeEventListener('click',handleClick);
             }
             setTimeout(function(){
-                // $(first_card_clicked).removeClass("flipped");
                 first_card_clicked.classList.remove("flipped");
-                // $(second_card_clicked).removeClass("flipped");
                 second_card_clicked.classList.remove('flipped');
                 first_card_clicked=null;
                 second_card_clicked=null;
@@ -120,9 +110,7 @@ function cardClick(card_back){
                 for(var i=0;i<x.length;i++){
                     y[i].addEventListener('click',handleClick);
                 }
-                // $('.back').on("click",handleClick);
             }, 2000);
-            console.log("no match");
         }
     }
 }
@@ -166,7 +154,6 @@ function removeOldDivs() {
 //
 // timeDifference();
 function changePortrait(){
-    console.log('reached me');
     var _div1 = document.createElement('DIV');
     _div1.id = 'alertBox';
     _div1.className="modal fade in";
@@ -185,7 +172,7 @@ function changePortrait(){
     _div4.className ="modal-body";
     var _p=document.createElement("P");
     _p.className="sizeP";
-    _p.innerHTML="This game is best played on larger screen resolutions.  Please change your phone's orientation to landscape before playing DBZ Memory Match."
+    _p.innerHTML="This game is best played on larger screen resolutions.  Please change your phone's orientation to landscape before playing DBZ Memory Match.";
     _div3.appendChild(_div4.appendChild(_p));
 
     document.getElementsByTagName("body")[0].appendChild(_div1);
