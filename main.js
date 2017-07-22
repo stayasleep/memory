@@ -1,26 +1,26 @@
-var get_card_class = document.getElementsByClassName('card'); //collect all parent card class divs which will hold our card front and back
-var card_class_mixer=[]; //puts the 18 classes into an array
-var random_class=[];     //18 classes and randomly returned
-var first_card_clicked  = null;
-var second_card_clicked=null;
-var total_possible_matches = 9;
-var match_counter=0;
-var attempts=0;
-var accuracy=0;
-var games_played=0;
+let get_card_class = document.getElementsByClassName('card'); //collect all parent card class divs which will hold our card front and back
+let card_class_mixer=[]; //puts the 18 classes into an array
+let random_class=[];     //18 classes and randomly returned
+let first_card_clicked  = null;
+let second_card_clicked=null;
+const total_possible_matches = 1;
+let match_counter=0;
+let attempts=0;
+let accuracy=0;
+let games_played=0;
 
 document.addEventListener("DOMContentLoaded",ready);
+
 function ready(){
     initializeGame();
 }
-//Randomly generate the div position, attach click handlers and display stats
+//Randomly generate the div position, attach click handlers and start game
 function initializeGame() {
     createAddRandomDivs();
     changePortrait();
-    var classname = document.getElementsByClassName('back');
-    for (var i=0;i<classname.length;i++){
-        classname[i].addEventListener('click',handleClick)
-    };
+    Array.from(document.getElementsByClassName("back")).forEach(function(childBack){
+        childBack.addEventListener("click",handleClick);
+    });
     document.getElementById('reset').addEventListener('click',resetGame);
     games_played=1;
 }
@@ -30,6 +30,8 @@ function createAddRandomDivs(){
         var temp=get_card_class[j];
         card_class_mixer.push(temp);
     }
+
+    //basically all cards go ina  bag, randomly assign a cards to a new array, out of order, and then below the out of order cards get childrenNodes attached
     for (var d=0;d<card_class_mixer.length;){
         var x = Math.floor(Math.random()*card_class_mixer.length);
         random_class.push(card_class_mixer[x]);
@@ -60,26 +62,30 @@ function createAddRandomDivs(){
 };
 //Once you start clicking the board, the display stats should occur automatically
 function handleClick(){
-    cardClick(this);
+    cardClick(event);
     displayStats();
 }
 //grabs value of current stat and places the html inside the corresponding variable, occurs with each click
 function displayStats(){
     var element = document.querySelector(".attempts .value");
-    element.innerHTML=attempts;
+    element.innerText=attempts;
     var accurate = document.querySelector(".accuracy .value");
     accurate.innerHTML=Math.round(accuracy*100)+"%";
     var played = document.querySelector(".games-played .value");
     played.innerHTML=games_played;
 };
 
+
 //Do this for each click
-function cardClick(card_back){
-    flipCard(card_back);
+function cardClick(e){
+    console.log('card',e);
+    console.log('is this same as get el by id',e.target);
+    flipCard(e);
+
     if (first_card_clicked===null){
-        first_card_clicked = card_back;
+        first_card_clicked = e.target;
     } else{
-        second_card_clicked = card_back;
+        second_card_clicked = e.target;
         attempts+=1;
         accuracy =match_counter/attempts;
         var first_card = first_card_clicked.parentNode.childNodes[0].style.backgroundImage;
@@ -87,40 +93,61 @@ function cardClick(card_back){
         if (first_card===second_card){
             match_counter++;
             accuracy = match_counter/attempts;
-            //these arent being called
-            // $(first_card_clicked).fadeOut();
-            // $(second_card_clicked).fadeOut();
-            //the arent being called end
             first_card_clicked = null;
             second_card_clicked = null;
             if (match_counter === total_possible_matches){
-                // alert("Congratulations! You Win!");
                 gameOutcome("Congrats Z Warrior, You Win!");
+                let winLose = document.getElementById("winOrLose");
+                winLose.style.display="block";
+                // winLose.className+=" show";
+                winLose.style.backgroundColor="rgba(0,0,0,0.4)";
             }
         } else {
-            var x=document.getElementsByClassName('back');
-            for(var i=0;i<x.length;i++){
-                x[i].removeEventListener('click',handleClick);
-            }
+            Array.from(document.getElementsByClassName("back")).forEach(function(cardBack){
+                cardBack.removeEventListener("click",handleClick);
+            });
+            let resetBtn=document.getElementById("reset");
+            resetBtn.disabled = true;
             setTimeout(function(){
-                first_card_clicked.classList.remove("flipped");
-                second_card_clicked.classList.remove('flipped');
+                first_card_clicked.classList.remove("rotateOut","flipped");
+                second_card_clicked.classList.remove("rotateOut","flipped");
+
+
+                first_card_clicked.classList.add("rotateIn");
+                second_card_clicked.classList.add("rotateIn");
+
                 first_card_clicked=null;
                 second_card_clicked=null;
-                var y=document.getElementsByClassName('back');
-                for(var i=0;i<x.length;i++){
-                    y[i].addEventListener('click',handleClick);
-                }
+                resetBtn.disabled = false;
+                Array.from(document.getElementsByClassName("back")).forEach(function(cardBack){
+                    cardBack.addEventListener("click",handleClick);
+                });
             }, 2000);
         }
     }
 }
-//When clicked, 'flip' the card back over to reveal what's underneath
-function flipCard(card_back){
-    card_back.classList.add('flipped');
+
+function flipCard(back){
+    back.target.removeEventListener(back.type,handleClick);
+    console.log('flip called',back);
+    back.target.className+=" animated rotateOut";
+    back.target.addEventListener("webkitAnimationStart",function(e){
+        console.log('started event',e);
+        // back.target.removeEventListener(back.type,handleClick);
+        e.target.removeEventListener(e.type,arguments.callee);
+    });
+    back.target.addEventListener("webkitAnimationEnd",function(e){
+        console.log('event over',e);
+        //we dont want the animateend running every click, so we remove it when first invoked by target type and passing arguments of func
+        back.target.removeEventListener(e.type,arguments.callee);
+        back.target.classList.add("flipped");
+        back.target.addEventListener(back.type,handleClick);
+    });
 }
 //Reset the board
 function resetStats(){
+    first_card_clicked = null;
+    second_card_clicked = null;
     accuracy = 0;
     attempts = 0;
     match_counter = 0;
@@ -129,7 +156,7 @@ function resetStats(){
     card_class_mixer=[];
     random_class=[];
     removeOldDivs();
-};
+}
 //things to happen for each game...reset stats (and board), apply dom elements, attach click
 function resetGame(){
     resetStats();
@@ -139,13 +166,17 @@ function resetGame(){
         z[i].addEventListener('click',handleClick);
     }
 }
+/**
+ *@name removeOldDivs
+ * @description remove all children nodes of the parent while the loop remains true [deletes all card Front, then card Back]
+ */
 function removeOldDivs() {
-    var x = document.getElementsByClassName('front');
-    var y = document.getElementsByClassName('back');
-    for (var i = 0; i < get_card_class.length; i++) {
-        get_card_class[i].removeChild(x[0]);
-        get_card_class[i].removeChild(y[0]);
-    }
+    //remove all children from parent
+    Array.from(document.getElementsByClassName("card")).forEach(function(parent){
+        while(parent.firstChild){
+            parent.removeChild(parent.firstChild);
+        }
+    });
 }
 // var startTime = Date.now();
 // var interval = setInterval(function() {
@@ -182,36 +213,118 @@ function changePortrait(){
 }
 //Modal for Win or Lose, with a button that resets the game to play again
 function gameOutcome(str){
-    var _divA =document.createElement('DIV');
-    _divA.className="modal";
-    _divA.id="winOrLose";
-    _divA.setAttribute("role","dialog");
+    // var _divA =document.createElement('DIV');
+    // _divA.className="winModal";
+    // _divA.id="winOrLose";
+    // _divA.setAttribute("role","dialog");
+    //
+    // var _divB=document.createElement("DIV");
+    // _divB.className="modal-content";
+    // var _divC1 = document.createElement("DIV");
+    // _divC1.className="modal-header c";
+    // var _h2 = document.createElement("h2");
+    // _h2.innerText="DBZ";
+    // _divC1.appendChild(_h2);
+    // var _divC2 = document.createElement("DIV");
+    // _divC2.className="modal-body c";
+    // var _p = document.createElement("P");
+    // _p.innerText= str;
+    // _divC2.appendChild(_p);
+    // var _divC3 = document.createElement("DIV");
+    // _divC3.className="modal-footer c";
+    // var _button = document.createElement("BUTTON");
+    // _button.className="btn btn-primary reset";
+    // _button.setAttribute("value","Play Again");
+    // _divC3.appendChild(_button);
+    //
+    // _divB.appendChild(_divC1);
+    // _divB.appendChild(_divC2);
+    // _divB.appendChild(_divC3);
+    // _divA.appendChild(_divB);
+    // document.getElementsByTagName("body")[0].appendChild(_divA);
+    // var cDivs = document.getElementsByClassName("c");
+    // var fragment = document.createDocumentFragment();
+    // for (var j=0;j<cDivs.length;j++){
+    //     fragment.appendChild(cDivs[j]);
+    // }
+    // _divA.appendChild(_divB.appendChild(fragment));
+    // document.getElementsByTagName("body")[0].appendChild(_divA);
+    // document.getElementsByTagName("body")[0].appendChild(_divA.appendChild(_divB.appendChild(_divC1).appendChild(_divC2).appendChild(_divC3)));
+    let modalFade = document.createElement("div");
+    modalFade.className="winModal modal";
+    modalFade.id="winOrLose";
+    modalFade.setAttribute("tabindex","-1");
+    modalFade.style.display="none";
 
-    var _divB=document.createElement("DIV");
-    _divB.className="modal-content";
-    var _divC1 = document.createElement("DIV");
-    _divC1.className="modal-header c";
-    var _h2 = document.createElement("h2");
-    _h2.innerText="DBZ";
-    _divC1.appendChild(_h2);
-    var _divC2 = document.createElement("DIV");
-    _divC2.className="modal-body c";
-    var _p = document.createElement("P");
-    _p.innerText= str;
-    _divC2.appendChild(_p);
-    var _divC3 = document.createElement("DIV");
-    _divC3.className="modal-footer c";
-    var _button = document.createElement("BUTTON");
-    _button.className="btn btn-default reset";
-    _button.setAttribute("value","Play Again");
-    _divC3.appendChild(_button);
-    var cDivs = document.getElementsByClassName("c");
-    var fragment = document.createDocumentFragment();
-    for (var j=0;j<cDivs.length;j++){
-        fragment.appendChild(cDivs[j]);
-    }
-    _divA.appendChild(_divB.appendChild(fragment));
-    document.getElementsByTagName("body")[0].appendChild(_divA);
-    // _divA.appendChild(_divB.appendChild(_divC1,_divC2,_divC2));
+    let modalDialog = document.createElement("div");
+    modalDialog.className="modal-dialog";
+    modalDialog.setAttribute("role","document");
+
+    let modalContent  = document.createElement("div");
+    modalContent.className="modal-content";
+    let modalHeader = document.createElement("div");
+    modalHeader.className="modal-header";
+
+    let modalTitle =document.createElement("h5");
+    modalTitle.className="modal-title";
+    modalTitle.innerText="Enter Info Below";
+
+    let button = document.createElement("button");
+    button.className="close";
+    button.setAttribute("data-dismiss","modal");
+    button.setAttribute("aria-label","Close");
+    button.addEventListener("click",function(){
+        modalFade.classList.remove("show");
+        modalFade.style.display="none";
+    });
+
+    let spanClose = document.createElement("span");
+    spanClose.setAttribute("aria-hidden","true");
+    spanClose.innerHTML="&times;";
+
+    let modalBody = document.createElement("div");
+    modalBody.className="modal-body";
+
+    let _p = document.createElement("p");
+    _p.className="pModal";
+    _p.innerText=str;
+
+    let modalFooter = document.createElement("div");
+    modalFooter.className="modal-footer";
+
+    let btnSubmit = document.createElement("button");
+    btnSubmit.setAttribute("type","button");
+    btnSubmit.className="playAgain btn btn-primary";
+    btnSubmit.setAttribute("data-dismiss","modal");
+    btnSubmit.innerHTML="Play Again";
+    btnSubmit.addEventListener('click',function(){
+        modalFade.classList.remove("show");
+        modalFade.style.display="none";
+        resetGame();
+    });
+
+    let btnCancel = document.createElement("button");
+    btnCancel.setAttribute("type","button");
+    btnCancel.className = "closeModal btn btn-secondary";
+    btnCancel.setAttribute("data-dismiss","modal");
+    btnCancel.innerText="Close";
+    btnCancel.addEventListener("click",function(){
+        modalFade.classList.remove("show");
+        modalFade.style.display="none";
+    });
+    //make this cool using a fragment later on
+    modalFooter.appendChild(btnSubmit);
+    modalFooter.appendChild(btnCancel);
+    modalBody.appendChild(_p);
+    button.appendChild(spanClose);
+    modalHeader.appendChild(modalTitle);
+    modalHeader.appendChild(button);
+    modalContent.appendChild(modalHeader);
+    modalContent.appendChild(modalBody);
+    modalContent.appendChild(modalFooter);
+    modalDialog.appendChild(modalContent);
+    modalFade.appendChild(modalDialog);
+
+    document.getElementsByTagName('body')[0].appendChild(modalFade);
 
 }
