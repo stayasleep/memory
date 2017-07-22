@@ -1,26 +1,25 @@
-var get_card_class = document.getElementsByClassName('card'); //collect all parent card class divs which will hold our card front and back
-var card_class_mixer=[]; //puts the 18 classes into an array
-var random_class=[];     //18 classes and randomly returned
-var first_card_clicked  = null;
-var second_card_clicked=null;
-var total_possible_matches = 9;
-var match_counter=0;
-var attempts=0;
-var accuracy=0;
-var games_played=0;
+let get_card_class = document.getElementsByClassName('card'); //collect all parent card class divs which will hold our card front and back
+let card_class_mixer=[]; //puts the 18 classes into an array
+let random_class=[];     //18 classes and randomly returned
+let first_card_clicked  = null;
+let second_card_clicked=null;
+const total_possible_matches = 9;
+let match_counter=0;
+let attempts=0;
+let accuracy=0;
+let games_played=0;
 
 document.addEventListener("DOMContentLoaded",ready);
 function ready(){
     initializeGame();
 }
-//Randomly generate the div position, attach click handlers and display stats
+//Randomly generate the div position, attach click handlers and start game
 function initializeGame() {
     createAddRandomDivs();
     changePortrait();
-    var classname = document.getElementsByClassName('back');
-    for (var i=0;i<classname.length;i++){
-        classname[i].addEventListener('click',handleClick)
-    };
+    Array.from(document.getElementsByClassName("back")).forEach(function(childBack){
+        childBack.addEventListener("click",handleClick);
+    });
     document.getElementById('reset').addEventListener('click',resetGame);
     games_played=1;
 }
@@ -30,11 +29,8 @@ function createAddRandomDivs(){
         var temp=get_card_class[j];
         card_class_mixer.push(temp);
     }
-    // Array.from(document.getElementsByClassName("card")).forEach(function(container){
-    //
-    // })
 
-
+    //basically all cards go ina  bag, randomly assign a cards to a new array, out of order, and then below the out of order cards get childrenNodes attached
     for (var d=0;d<card_class_mixer.length;){
         var x = Math.floor(Math.random()*card_class_mixer.length);
         random_class.push(card_class_mixer[x]);
@@ -101,17 +97,21 @@ function cardClick(e){
             if (match_counter === total_possible_matches){
                 // alert("Congratulations! You Win!");
                 gameOutcome("Congrats Z Warrior, You Win!");
+                let winLose = document.getElementById("winOrLose");
+                winLose.style.display="block";
             }
         } else {
             Array.from(document.getElementsByClassName("back")).forEach(function(cardBack){
                 cardBack.removeEventListener("click",handleClick);
             });
+            let resetBtn=document.getElementById("reset");
+            resetBtn.disabled = true;
             setTimeout(function(){
                 first_card_clicked.classList.remove("flipped");
                 second_card_clicked.classList.remove('flipped');
                 first_card_clicked=null;
                 second_card_clicked=null;
-
+                resetBtn.disabled = false;
                 Array.from(document.getElementsByClassName("back")).forEach(function(cardBack){
                     cardBack.addEventListener("click",handleClick);
                 });
@@ -125,6 +125,8 @@ function flipCard(back){
 }
 //Reset the board
 function resetStats(){
+    first_card_clicked = null;
+    second_card_clicked = null;
     accuracy = 0;
     attempts = 0;
     match_counter = 0;
@@ -133,7 +135,7 @@ function resetStats(){
     card_class_mixer=[];
     random_class=[];
     removeOldDivs();
-};
+}
 //things to happen for each game...reset stats (and board), apply dom elements, attach click
 function resetGame(){
     resetStats();
@@ -191,7 +193,7 @@ function changePortrait(){
 //Modal for Win or Lose, with a button that resets the game to play again
 function gameOutcome(str){
     var _divA =document.createElement('DIV');
-    _divA.className="modal";
+    _divA.className="winModal";
     _divA.id="winOrLose";
     _divA.setAttribute("role","dialog");
 
@@ -213,13 +215,14 @@ function gameOutcome(str){
     _button.className="btn btn-default reset";
     _button.setAttribute("value","Play Again");
     _divC3.appendChild(_button);
-    var cDivs = document.getElementsByClassName("c");
-    var fragment = document.createDocumentFragment();
-    for (var j=0;j<cDivs.length;j++){
-        fragment.appendChild(cDivs[j]);
-    }
-    _divA.appendChild(_divB.appendChild(fragment));
-    document.getElementsByTagName("body")[0].appendChild(_divA);
-    // _divA.appendChild(_divB.appendChild(_divC1,_divC2,_divC2));
+    // var cDivs = document.getElementsByClassName("c");
+    // var fragment = document.createDocumentFragment();
+    // for (var j=0;j<cDivs.length;j++){
+    //     fragment.appendChild(cDivs[j]);
+    // }
+    // _divA.appendChild(_divB.appendChild(fragment));
+    // document.getElementsByTagName("body")[0].appendChild(_divA);
+    document.getElementsByTagName("body")[0].appendChild(_divA.appendChild(_divB.appendChild(_divC1).appendChild(_divC2).appendChild(_divC3)));
+
 
 }
