@@ -128,11 +128,12 @@ function cardClick(e){
 }
 
 function flipCard(back){
+    back.target.removeEventListener(back.type,handleClick);
     console.log('flip called',back);
     back.target.className+=" animated rotateOut";
     back.target.addEventListener("webkitAnimationStart",function(e){
         console.log('started event',e);
-        back.target.removeEventListener(back.type,handleClick);
+        // back.target.removeEventListener(back.type,handleClick);
         e.target.removeEventListener(e.type,arguments.callee);
     });
     back.target.addEventListener("webkitAnimationEnd",function(e){
