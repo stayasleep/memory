@@ -94,7 +94,8 @@ function cardClick(card_back){
             first_card_clicked = null;
             second_card_clicked = null;
             if (match_counter === total_possible_matches){
-                alert("Congratulations! You Win!");
+                // alert("Congratulations! You Win!");
+                gameOutcome("Congrats Z Warrior, You Win!");
             }
         } else {
             var x=document.getElementsByClassName('back');
@@ -178,4 +179,39 @@ function changePortrait(){
     document.getElementsByTagName("body")[0].appendChild(_div1);
     // document.getElementById("alertBox").
     // document.getElementById("alertBox").setAttribute("rel","modal:open");
+}
+//Modal for Win or Lose, with a button that resets the game to play again
+function gameOutcome(str){
+    var _divA =document.createElement('DIV');
+    _divA.className="modal";
+    _divA.id="winOrLose";
+    _divA.setAttribute("role","dialog");
+
+    var _divB=document.createElement("DIV");
+    _divB.className="modal-content";
+    var _divC1 = document.createElement("DIV");
+    _divC1.className="modal-header c";
+    var _h2 = document.createElement("h2");
+    _h2.innerText="DBZ";
+    _divC1.appendChild(_h2);
+    var _divC2 = document.createElement("DIV");
+    _divC2.className="modal-body c";
+    var _p = document.createElement("P");
+    _p.innerText= str;
+    _divC2.appendChild(_p);
+    var _divC3 = document.createElement("DIV");
+    _divC3.className="modal-footer c";
+    var _button = document.createElement("BUTTON");
+    _button.className="btn btn-default reset";
+    _button.setAttribute("value","Play Again");
+    _divC3.appendChild(_button);
+    var cDivs = document.getElementsByClassName("c");
+    var fragment = document.createDocumentFragment();
+    for (var j=0;j<cDivs.length;j++){
+        fragment.appendChild(cDivs[j]);
+    }
+    _divA.appendChild(_divB.appendChild(fragment));
+    document.getElementsByTagName("body")[0].appendChild(_divA);
+    // _divA.appendChild(_divB.appendChild(_divC1,_divC2,_divC2));
+
 }
