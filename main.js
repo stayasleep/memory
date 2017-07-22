@@ -30,6 +30,11 @@ function createAddRandomDivs(){
         var temp=get_card_class[j];
         card_class_mixer.push(temp);
     }
+    // Array.from(document.getElementsByClassName("card")).forEach(function(container){
+    //
+    // })
+
+
     for (var d=0;d<card_class_mixer.length;){
         var x = Math.floor(Math.random()*card_class_mixer.length);
         random_class.push(card_class_mixer[x]);
@@ -60,13 +65,13 @@ function createAddRandomDivs(){
 };
 //Once you start clicking the board, the display stats should occur automatically
 function handleClick(){
-    cardClick(this);
+    cardClick(event);
     displayStats();
 }
 //grabs value of current stat and places the html inside the corresponding variable, occurs with each click
 function displayStats(){
     var element = document.querySelector(".attempts .value");
-    element.innerHTML=attempts;
+    element.innerText=attempts;
     var accurate = document.querySelector(".accuracy .value");
     accurate.innerHTML=Math.round(accuracy*100)+"%";
     var played = document.querySelector(".games-played .value");
@@ -74,23 +79,23 @@ function displayStats(){
 };
 
 //Do this for each click
-function cardClick(card_back){
-    flipCard(card_back);
+function cardClick(e){
+    console.log('card',e);
+    flipCard(e.target);
     if (first_card_clicked===null){
-        first_card_clicked = card_back;
+        // first_card_clicked = e.target.parentNode.childNodes[0].style.backgroundImage;
+        first_card_clicked = e.target;
     } else{
-        second_card_clicked = card_back;
+        second_card_clicked = e.target;
+        // second_card_clicked = e.target.parentNode.childNodes[0].style.backgroundImage;
         attempts+=1;
         accuracy =match_counter/attempts;
         var first_card = first_card_clicked.parentNode.childNodes[0].style.backgroundImage;
         var second_card = second_card_clicked.parentNode.childNodes[0].style.backgroundImage;
         if (first_card===second_card){
+        // if(first_card_clicked === second_card_clicked){
             match_counter++;
             accuracy = match_counter/attempts;
-            //these arent being called
-            // $(first_card_clicked).fadeOut();
-            // $(second_card_clicked).fadeOut();
-            //the arent being called end
             first_card_clicked = null;
             second_card_clicked = null;
             if (match_counter === total_possible_matches){
@@ -98,26 +103,25 @@ function cardClick(card_back){
                 gameOutcome("Congrats Z Warrior, You Win!");
             }
         } else {
-            var x=document.getElementsByClassName('back');
-            for(var i=0;i<x.length;i++){
-                x[i].removeEventListener('click',handleClick);
-            }
+            Array.from(document.getElementsByClassName("back")).forEach(function(cardBack){
+                cardBack.removeEventListener("click",handleClick);
+            });
             setTimeout(function(){
                 first_card_clicked.classList.remove("flipped");
                 second_card_clicked.classList.remove('flipped');
                 first_card_clicked=null;
                 second_card_clicked=null;
-                var y=document.getElementsByClassName('back');
-                for(var i=0;i<x.length;i++){
-                    y[i].addEventListener('click',handleClick);
-                }
+
+                Array.from(document.getElementsByClassName("back")).forEach(function(cardBack){
+                    cardBack.addEventListener("click",handleClick);
+                });
             }, 2000);
         }
     }
 }
 //When clicked, 'flip' the card back over to reveal what's underneath
-function flipCard(card_back){
-    card_back.classList.add('flipped');
+function flipCard(back){
+    back.classList.add('flipped');
 }
 //Reset the board
 function resetStats(){
@@ -139,13 +143,17 @@ function resetGame(){
         z[i].addEventListener('click',handleClick);
     }
 }
+/**
+ *@name removeOldDivs
+ * @description remove all children nodes of the parent while the loop remains true [deletes all card Front, then card Back]
+ */
 function removeOldDivs() {
-    var x = document.getElementsByClassName('front');
-    var y = document.getElementsByClassName('back');
-    for (var i = 0; i < get_card_class.length; i++) {
-        get_card_class[i].removeChild(x[0]);
-        get_card_class[i].removeChild(y[0]);
-    }
+    //remove all children from parent
+    Array.from(document.getElementsByClassName("card")).forEach(function(parent){
+        while(parent.firstChild){
+            parent.removeChild(parent.firstChild);
+        }
+    });
 }
 // var startTime = Date.now();
 // var interval = setInterval(function() {
