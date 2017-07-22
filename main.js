@@ -3,13 +3,14 @@ let card_class_mixer=[]; //puts the 18 classes into an array
 let random_class=[];     //18 classes and randomly returned
 let first_card_clicked  = null;
 let second_card_clicked=null;
-const total_possible_matches = 9;
+const total_possible_matches = 1;
 let match_counter=0;
 let attempts=0;
 let accuracy=0;
 let games_played=0;
 
 document.addEventListener("DOMContentLoaded",ready);
+
 function ready(){
     initializeGame();
 }
@@ -74,31 +75,32 @@ function displayStats(){
     played.innerHTML=games_played;
 };
 
+
 //Do this for each click
 function cardClick(e){
     console.log('card',e);
+    console.log('is this same as get el by id',e.target);
     flipCard(e.target);
+
     if (first_card_clicked===null){
-        // first_card_clicked = e.target.parentNode.childNodes[0].style.backgroundImage;
         first_card_clicked = e.target;
     } else{
         second_card_clicked = e.target;
-        // second_card_clicked = e.target.parentNode.childNodes[0].style.backgroundImage;
         attempts+=1;
         accuracy =match_counter/attempts;
         var first_card = first_card_clicked.parentNode.childNodes[0].style.backgroundImage;
         var second_card = second_card_clicked.parentNode.childNodes[0].style.backgroundImage;
         if (first_card===second_card){
-        // if(first_card_clicked === second_card_clicked){
             match_counter++;
             accuracy = match_counter/attempts;
             first_card_clicked = null;
             second_card_clicked = null;
             if (match_counter === total_possible_matches){
-                // alert("Congratulations! You Win!");
                 gameOutcome("Congrats Z Warrior, You Win!");
                 let winLose = document.getElementById("winOrLose");
                 winLose.style.display="block";
+                // winLose.className+=" show";
+                winLose.style.backgroundColor="rgba(0,0,0,0.4)";
             }
         } else {
             Array.from(document.getElementsByClassName("back")).forEach(function(cardBack){
@@ -107,8 +109,13 @@ function cardClick(e){
             let resetBtn=document.getElementById("reset");
             resetBtn.disabled = true;
             setTimeout(function(){
-                first_card_clicked.classList.remove("flipped");
-                second_card_clicked.classList.remove('flipped');
+                first_card_clicked.classList.remove("rotateOut","flipped");
+                second_card_clicked.classList.remove("rotateOut","flipped");
+
+
+                first_card_clicked.classList.add("rotateIn");
+                second_card_clicked.classList.add("rotateIn");
+
                 first_card_clicked=null;
                 second_card_clicked=null;
                 resetBtn.disabled = false;
@@ -121,7 +128,15 @@ function cardClick(e){
 }
 //When clicked, 'flip' the card back over to reveal what's underneath
 function flipCard(back){
-    back.classList.add('flipped');
+    // back.classList.add('flipped');
+    console.log('bacl',back);
+    back.className+=" animated rotateOut";
+    back.addEventListener("webkitAnimationEnd",function(){
+        back.removeEventListener("webkitAnimationEnd");
+        console.log('am ending the animoo');
+        back.classList.add("flipped");
+    });
+    console.log('animoo over');
 }
 //Reset the board
 function resetStats(){
@@ -192,29 +207,35 @@ function changePortrait(){
 }
 //Modal for Win or Lose, with a button that resets the game to play again
 function gameOutcome(str){
-    var _divA =document.createElement('DIV');
-    _divA.className="winModal";
-    _divA.id="winOrLose";
-    _divA.setAttribute("role","dialog");
-
-    var _divB=document.createElement("DIV");
-    _divB.className="modal-content";
-    var _divC1 = document.createElement("DIV");
-    _divC1.className="modal-header c";
-    var _h2 = document.createElement("h2");
-    _h2.innerText="DBZ";
-    _divC1.appendChild(_h2);
-    var _divC2 = document.createElement("DIV");
-    _divC2.className="modal-body c";
-    var _p = document.createElement("P");
-    _p.innerText= str;
-    _divC2.appendChild(_p);
-    var _divC3 = document.createElement("DIV");
-    _divC3.className="modal-footer c";
-    var _button = document.createElement("BUTTON");
-    _button.className="btn btn-default reset";
-    _button.setAttribute("value","Play Again");
-    _divC3.appendChild(_button);
+    // var _divA =document.createElement('DIV');
+    // _divA.className="winModal";
+    // _divA.id="winOrLose";
+    // _divA.setAttribute("role","dialog");
+    //
+    // var _divB=document.createElement("DIV");
+    // _divB.className="modal-content";
+    // var _divC1 = document.createElement("DIV");
+    // _divC1.className="modal-header c";
+    // var _h2 = document.createElement("h2");
+    // _h2.innerText="DBZ";
+    // _divC1.appendChild(_h2);
+    // var _divC2 = document.createElement("DIV");
+    // _divC2.className="modal-body c";
+    // var _p = document.createElement("P");
+    // _p.innerText= str;
+    // _divC2.appendChild(_p);
+    // var _divC3 = document.createElement("DIV");
+    // _divC3.className="modal-footer c";
+    // var _button = document.createElement("BUTTON");
+    // _button.className="btn btn-primary reset";
+    // _button.setAttribute("value","Play Again");
+    // _divC3.appendChild(_button);
+    //
+    // _divB.appendChild(_divC1);
+    // _divB.appendChild(_divC2);
+    // _divB.appendChild(_divC3);
+    // _divA.appendChild(_divB);
+    // document.getElementsByTagName("body")[0].appendChild(_divA);
     // var cDivs = document.getElementsByClassName("c");
     // var fragment = document.createDocumentFragment();
     // for (var j=0;j<cDivs.length;j++){
@@ -222,7 +243,82 @@ function gameOutcome(str){
     // }
     // _divA.appendChild(_divB.appendChild(fragment));
     // document.getElementsByTagName("body")[0].appendChild(_divA);
-    document.getElementsByTagName("body")[0].appendChild(_divA.appendChild(_divB.appendChild(_divC1).appendChild(_divC2).appendChild(_divC3)));
+    // document.getElementsByTagName("body")[0].appendChild(_divA.appendChild(_divB.appendChild(_divC1).appendChild(_divC2).appendChild(_divC3)));
+    let modalFade = document.createElement("div");
+    modalFade.className="winModal modal";
+    modalFade.id="winOrLose";
+    modalFade.setAttribute("tabindex","-1");
+    modalFade.style.display="none";
 
+    let modalDialog = document.createElement("div");
+    modalDialog.className="modal-dialog";
+    modalDialog.setAttribute("role","document");
+
+    let modalContent  = document.createElement("div");
+    modalContent.className="modal-content";
+    let modalHeader = document.createElement("div");
+    modalHeader.className="modal-header";
+
+    let modalTitle =document.createElement("h5");
+    modalTitle.className="modal-title";
+    modalTitle.innerText="Enter Info Below";
+
+    let button = document.createElement("button");
+    button.className="close";
+    button.setAttribute("data-dismiss","modal");
+    button.setAttribute("aria-label","Close");
+    button.addEventListener("click",function(){
+        modalFade.classList.remove("show");
+        modalFade.style.display="none";
+    });
+
+    let spanClose = document.createElement("span");
+    spanClose.setAttribute("aria-hidden","true");
+    spanClose.innerHTML="&times;";
+
+    let modalBody = document.createElement("div");
+    modalBody.className="modal-body";
+
+    let _p = document.createElement("p");
+    _p.className="pModal";
+    _p.innerText=str;
+
+    let modalFooter = document.createElement("div");
+    modalFooter.className="modal-footer";
+
+    let btnSubmit = document.createElement("button");
+    btnSubmit.setAttribute("type","button");
+    btnSubmit.className="playAgain btn btn-primary";
+    btnSubmit.setAttribute("data-dismiss","modal");
+    btnSubmit.innerHTML="Play Again";
+    btnSubmit.addEventListener('click',function(){
+        modalFade.classList.remove("show");
+        modalFade.style.display="none";
+        resetGame();
+    });
+
+    let btnCancel = document.createElement("button");
+    btnCancel.setAttribute("type","button");
+    btnCancel.className = "closeModal btn btn-secondary";
+    btnCancel.setAttribute("data-dismiss","modal");
+    btnCancel.innerText="Close";
+    btnCancel.addEventListener("click",function(){
+        modalFade.classList.remove("show");
+        modalFade.style.display="none";
+    });
+    //make this cool using a fragment later on
+    modalFooter.appendChild(btnSubmit);
+    modalFooter.appendChild(btnCancel);
+    modalBody.appendChild(_p);
+    button.appendChild(spanClose);
+    modalHeader.appendChild(modalTitle);
+    modalHeader.appendChild(button);
+    modalContent.appendChild(modalHeader);
+    modalContent.appendChild(modalBody);
+    modalContent.appendChild(modalFooter);
+    modalDialog.appendChild(modalContent);
+    modalFade.appendChild(modalDialog);
+
+    document.getElementsByTagName('body')[0].appendChild(modalFade);
 
 }
