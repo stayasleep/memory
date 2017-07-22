@@ -1,0 +1,196 @@
+body{
+    background-image: url("image/kamejpg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: black;
+    font-size: 2em;
+}
+.value{
+    border-bottom: 1px dotted black;
+}
+.label{
+    color: black;
+}
+.row{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+.game_body{
+    width: 100%;
+    height: 100vh;
+    padding: 0;
+}
+/*Sidebar elements*/
+.sidebar{
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.radar{
+    background-image: url("image/dbzside.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 40%;
+    width:100%;
+    /*position: relative;tonight*/
+    /*position: fixed;*/
+    /*bottom: -40px;tonight*/
+    align-self: flex-end;
+}
+.reset{
+    height: 10%;
+}
+.logo{
+    background-image: url("image/dbzheader.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    /*height: 100%; tonight*/
+    height: 17vh;
+    width: 50%;
+    margin-left: 100px;
+    /*width: 100%;tonight*/
+}
+/*Card area and cards*/
+.game_area{
+    height: 100%;
+    padding-right: 0; /*tonight*/
+}
+.card{
+    /*width: 10%; tonight*/
+    width: 3em;
+    height: 20%;
+    float: left;
+    margin: 10px;
+    position: relative;
+}
+
+.front, .back {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+.back{
+    background-size: 100% 100%;
+    border-radius: 15px;
+}
+.front{
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.flipped{
+    display: none;
+}
+/* Dropdown Button */
+.dropbtn {
+    float: left;
+}
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    height: 17vh;
+    bottom: -75px;
+}
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: transparent;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+}
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 4px;
+    text-decoration: none;
+    display: block;
+}
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: red; opacity: .75}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+/*About me*/
+.bg-about{
+    color: black;
+    text-align: center;
+}
+.img-circle{
+    height: 300px;
+    width: 300px;
+    border-radius: 0;
+}
+.bg-3 {
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+#alertBox{
+    display: none;
+}
+.ifSmall{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+/*mobile*/
+@media only screen
+    and (min-device-width: 320px)
+    and (max-device-width: 480px)
+    and (-webkit-min-device-pixel-ratio: 2)
+    and (orientation: portrait){
+    .checkRes{
+        height: 90vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .sizeP{
+        padding: 0 10px;
+    }
+
+    #alertBox{
+        display: block;
+    }
+
+}
+@media screen and (max-width: 767px){
+    .game_area{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .card{
+        float: none;
+        margin: 0;
+    }
+    .reset{
+        height: 3em;
+    }
+    .logo{
+        height: 17vw;
+    }
+
+}
+@media screen and (min-width: 768px){
+    .game_area{
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .card{
+        float: none;
+    }
+    .ifSmall{
+        align-items: flex-end;
+    }
+    .reset{
+        height: 3em;
+    }
+}
