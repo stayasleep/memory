@@ -80,7 +80,7 @@ function displayStats(){
 function cardClick(e){
     console.log('card',e);
     console.log('is this same as get el by id',e.target);
-    flipCard(e.target);
+    flipCard(e);
 
     if (first_card_clicked===null){
         first_card_clicked = e.target;
@@ -126,17 +126,22 @@ function cardClick(e){
         }
     }
 }
-//When clicked, 'flip' the card back over to reveal what's underneath
+
 function flipCard(back){
-    // back.classList.add('flipped');
-    console.log('bacl',back);
-    back.className+=" animated rotateOut";
-    back.addEventListener("webkitAnimationEnd",function(){
-        back.removeEventListener("webkitAnimationEnd");
-        console.log('am ending the animoo');
-        back.classList.add("flipped");
+    console.log('flip called',back);
+    back.target.className+=" animated rotateOut";
+    back.target.addEventListener("webkitAnimationStart",function(e){
+        console.log('started event',e);
+        back.target.removeEventListener(back.type,handleClick);
+        e.target.removeEventListener(e.type,arguments.callee);
     });
-    console.log('animoo over');
+    back.target.addEventListener("webkitAnimationEnd",function(e){
+        console.log('event over',e);
+        //we dont want the animateend running every click, so we remove it when first invoked by target type and passing arguments of func
+        back.target.removeEventListener(e.type,arguments.callee);
+        back.target.classList.add("flipped");
+        back.target.addEventListener(back.type,handleClick);
+    });
 }
 //Reset the board
 function resetStats(){
