@@ -3,7 +3,7 @@ let card_class_mixer=[]; //puts the 18 classes into an array
 let random_class=[];     //18 classes and randomly returned
 let first_card_clicked  = null;
 let second_card_clicked=null;
-const total_possible_matches = 1;
+const total_possible_matches = 2;
 let match_counter=0;
 let attempts=0;
 let accuracy=0;
@@ -62,7 +62,7 @@ function createAddRandomDivs(){
         }
     }
 };
-//Once you start clicking the board, the display stats should occur automatically
+//handlers for Back divs
 function handleClick(){
     cardClick(event);
     displayStats();
@@ -75,7 +75,7 @@ function displayStats(){
     accurate.innerHTML=Math.round(accuracy*100)+"%";
     var played = document.querySelector(".games-played .value");
     played.innerHTML=games_played;
-};
+}
 
 
 //Do this for each click
@@ -89,12 +89,16 @@ function cardClick(e){
     } else{
         second_card_clicked = e.target;
         attempts+=1;
-        accuracy =match_counter/attempts;
-        var first_card = first_card_clicked.parentNode.childNodes[0].style.backgroundImage;
-        var second_card = second_card_clicked.parentNode.childNodes[0].style.backgroundImage;
-        if (first_card===second_card){
+        accuracy = match_counter/attempts;
+        let first_card = first_card_clicked.parentNode.childNodes[0].style.backgroundImage;
+        let second_card = second_card_clicked.parentNode.childNodes[0].style.backgroundImage;
+        if (first_card === second_card){
             match_counter++;
             accuracy = match_counter/attempts;
+            //temp
+            first_card_clicked.classList.add("matched");
+            second_card_clicked.classList.add("matched");
+            //temp
             first_card_clicked = null;
             second_card_clicked = null;
             if (match_counter === total_possible_matches){
@@ -210,48 +214,9 @@ function changePortrait(){
     _div3.appendChild(_div4.appendChild(_p));
 
     document.getElementsByTagName("body")[0].appendChild(_div1);
-    // document.getElementById("alertBox").
-    // document.getElementById("alertBox").setAttribute("rel","modal:open");
 }
 //Modal for Win or Lose, with a button that resets the game to play again
 function gameOutcome(str){
-    // var _divA =document.createElement('DIV');
-    // _divA.className="winModal";
-    // _divA.id="winOrLose";
-    // _divA.setAttribute("role","dialog");
-    //
-    // var _divB=document.createElement("DIV");
-    // _divB.className="modal-content";
-    // var _divC1 = document.createElement("DIV");
-    // _divC1.className="modal-header c";
-    // var _h2 = document.createElement("h2");
-    // _h2.innerText="DBZ";
-    // _divC1.appendChild(_h2);
-    // var _divC2 = document.createElement("DIV");
-    // _divC2.className="modal-body c";
-    // var _p = document.createElement("P");
-    // _p.innerText= str;
-    // _divC2.appendChild(_p);
-    // var _divC3 = document.createElement("DIV");
-    // _divC3.className="modal-footer c";
-    // var _button = document.createElement("BUTTON");
-    // _button.className="btn btn-primary reset";
-    // _button.setAttribute("value","Play Again");
-    // _divC3.appendChild(_button);
-    //
-    // _divB.appendChild(_divC1);
-    // _divB.appendChild(_divC2);
-    // _divB.appendChild(_divC3);
-    // _divA.appendChild(_divB);
-    // document.getElementsByTagName("body")[0].appendChild(_divA);
-    // var cDivs = document.getElementsByClassName("c");
-    // var fragment = document.createDocumentFragment();
-    // for (var j=0;j<cDivs.length;j++){
-    //     fragment.appendChild(cDivs[j]);
-    // }
-    // _divA.appendChild(_divB.appendChild(fragment));
-    // document.getElementsByTagName("body")[0].appendChild(_divA);
-    // document.getElementsByTagName("body")[0].appendChild(_divA.appendChild(_divB.appendChild(_divC1).appendChild(_divC2).appendChild(_divC3)));
     let modalFade = document.createElement("div");
     modalFade.className="winModal modal";
     modalFade.id="winOrLose";
@@ -340,5 +305,7 @@ function bounceHint(e){
 }
 
 function giveHints(){
-    console.log('am clicked, here is a clue, git gud');
+    //case 1, gather all parent containers and see if they are not flipped and not matched
+    //HOF making this tough
+
 }
