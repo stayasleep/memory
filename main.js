@@ -114,12 +114,13 @@ function cardClick(e){
             let resetBtn=document.getElementById("reset");
             resetBtn.disabled = true;
             setTimeout(function(){
-                first_card_clicked.classList.remove("rotateOut","flipped");
-                second_card_clicked.classList.remove("rotateOut","flipped");
+                first_card_clicked.classList.remove("animated","rotateOut","flipped");
+                second_card_clicked.classList.remove("animated","rotateOut","flipped");
 
+                helperWithAnimation([first_card_clicked,second_card_clicked],"animated","rotateIn");
 
-                first_card_clicked.classList.add("rotateIn");
-                second_card_clicked.classList.add("rotateIn");
+                // first_card_clicked.classList.add("rotateIn");
+                // second_card_clicked.classList.add("rotateIn");
 
                 first_card_clicked=null;
                 second_card_clicked=null;
@@ -315,8 +316,12 @@ function giveHints(){
         avoidAlrdyMatched.some(function(sibling,index){
             if(sibling.previousSibling.style.backgroundImage===matchThis){
                 //we found the matching sibling...lets do some animoo
-                avoidAlrdyMatched[lengthIs].classList.add("animated","tada");
-                avoidAlrdyMatched[index].classList.add("animated","tada");
+                // avoidAlrdyMatched[lengthIs].classList.add("animated","tada");
+                // avoidAlrdyMatched[index].classList.add("animated","tada");
+                //test
+                let arr=[avoidAlrdyMatched[lengthIs],avoidAlrdyMatched[index]];
+                helperWithAnimation(arr,"animated","tada");
+                //test
             }
         });
         //remember to remove the class from above once animation is donezo
@@ -327,11 +332,11 @@ function giveHints(){
         //we use the clicked card and traverse the node to find siblings backgroundImg and then match
         let firstSibClick = first_card_clicked.previousSibling.style.backgroundImage;
 
-        //now we need to match this in the array...but should we go thru everything or is there an easier way
         //one is already displayed...only the other should have some animoo. not the one displayed as well
         let matchThese=Array.from(document.getElementsByClassName("back")).filter(function(owner, index){
            return owner.previousSibling.style.backgroundImage === firstSibClick && !owner.classList.contains("flipped");
         });
+        helperWithAnimation(matchThese,"animated","tada");
         console.log('found the two',matchThese);
     }
 }
