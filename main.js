@@ -105,7 +105,6 @@ function cardClick(e){
                 gameOutcome("Congrats Z Warrior, You Win!");
                 let winLose = document.getElementById("winOrLose");
                 winLose.style.display="block";
-                // winLose.className+=" show";
                 winLose.style.backgroundColor="rgba(0,0,0,0.4)";
             }
         } else {
@@ -129,6 +128,7 @@ function cardClick(e){
                     cardBack.addEventListener("click",handleClick);
                 });
             }, 2000);
+            console.log('i am waiting ');
         }
     }
 }
@@ -139,7 +139,6 @@ function flipCard(back){
     back.target.className+=" animated rotateOut";
     back.target.addEventListener("webkitAnimationStart",function(e){
         console.log('started event',e);
-        // back.target.removeEventListener(back.type,handleClick);
         e.target.removeEventListener(e.type,arguments.callee);
     });
     back.target.addEventListener("webkitAnimationEnd",function(e){
@@ -305,7 +304,28 @@ function bounceHint(e){
 }
 
 function giveHints(){
-    //case 1, gather all parent containers and see if they are not flipped and not matched
-    //HOF making this tough
-
+    //case 1, no cards have been clicked yet at the start of a turn
+    if(!first_card_clicked && !second_card_clicked){
+        let avoidAlrdyMatched=Array.from(document.getElementsByClassName("back")).filter(function(owner,index){
+            return !owner.classList.contains("matched");
+        });
+        let lengthIs = avoidAlrdyMatched.length-1; //get the length, use the last one to search for matches eh
+        let matchThis = avoidAlrdyMatched[lengthIs].previousSibling.style.backgroundImage;
+        //we use some because we only want to run this until we find a match...not the whole way thru ..right
+        avoidAlrdyMatched.some(function(sibling,index){
+            if(sibling.previousSibling.style.backgroundImage===matchThis){
+                //we found the matching sibling...lets do some animoo
+                avoidAlrdyMatched[lengthIs].classList.add("animated","shake");
+                avoidAlrdyMatched[index].classList.add("animated","shake");
+            }
+        });
+        //remember to remove the class from above once animation is donezo
+        console.log('avoid',avoidAlrdyMatched);
+        //now we have index position of the matched pair and the orig, which is the last spot in array...send user a hint
+    }else if(first_card_clicked && !second_card_clicked){
+        //so now the first card is clicked, but the second card is not yet clicked
+        //we use the clicked card and traverse the node to find siblings backgroundImg and then match like above
+        let firstSibling = first_card_clicked.previousSibling.style.backgroundImage;
+        //now we need to match this in the array...but should we go thru everything or is there an easier way
+    }
 }
