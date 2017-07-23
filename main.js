@@ -315,17 +315,34 @@ function giveHints(){
         avoidAlrdyMatched.some(function(sibling,index){
             if(sibling.previousSibling.style.backgroundImage===matchThis){
                 //we found the matching sibling...lets do some animoo
-                avoidAlrdyMatched[lengthIs].classList.add("animated","shake");
-                avoidAlrdyMatched[index].classList.add("animated","shake");
+                avoidAlrdyMatched[lengthIs].classList.add("animated","tada");
+                avoidAlrdyMatched[index].classList.add("animated","tada");
             }
         });
         //remember to remove the class from above once animation is donezo
         console.log('avoid',avoidAlrdyMatched);
         //now we have index position of the matched pair and the orig, which is the last spot in array...send user a hint
     }else if(first_card_clicked && !second_card_clicked){
-        //so now the first card is clicked, but the second card is not yet clicked
-        //we use the clicked card and traverse the node to find siblings backgroundImg and then match like above
-        let firstSibling = first_card_clicked.previousSibling.style.backgroundImage;
+        //so now the first card is clicked, but the sec card is not yet clicked
+        //we use the clicked card and traverse the node to find siblings backgroundImg and then match
+        let firstSibClick = first_card_clicked.previousSibling.style.backgroundImage;
+
         //now we need to match this in the array...but should we go thru everything or is there an easier way
+        //one is already displayed...only the other should have some animoo. not the one displayed as well
+        let matchThese=Array.from(document.getElementsByClassName("back")).filter(function(owner, index){
+           return owner.previousSibling.style.backgroundImage === firstSibClick && !owner.classList.contains("flipped");
+        });
+        console.log('found the two',matchThese);
     }
+}
+
+//helper functions
+function helperWithAnimation(nodeArray,cssClass,cssClass2){
+    nodeArray.forEach(function(element,index){
+        element.classList.add(cssClass,cssClass2);
+        element.addEventListener("webkitAnimationEnd",function(e){
+            element.removeEventListener(e.type,arguments.callee);
+            element.classList.remove(cssClass,cssClass2);
+        })
+    });
 }
