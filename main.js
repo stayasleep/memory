@@ -22,6 +22,8 @@ function initializeGame() {
         childBack.addEventListener("click",handleClick);
     });
     document.getElementById('reset').addEventListener('click',resetGame);
+    document.getElementsByClassName('radar')[0].addEventListener('mouseover',bounceHint);
+    document.getElementsByClassName("radar")[0].addEventListener("click", giveHints);
     games_played=1;
 }
 //Take the node list of classes, push them into a new array randomly and then assign each a child with css prop attached
@@ -327,4 +329,16 @@ function gameOutcome(str){
 
     document.getElementsByTagName('body')[0].appendChild(modalFade);
 
+}
+//bouncy time...check for mobile at the end
+function bounceHint(e){
+    console.log('moused over me',e);
+    e.target.classList.add("animated","bounce");
+    e.target.addEventListener("webkitAnimationEnd",function(){
+        e.target.classList.remove("animated","bounce");
+    });
+}
+
+function giveHints(){
+    console.log('am clicked, here is a clue, git gud');
 }
