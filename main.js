@@ -26,19 +26,25 @@ function initializeGame() {
     document.getElementsByClassName("radar")[0].addEventListener("click", giveHints);
     games_played=1;
 }
-//Take the node list of classes, push them into a new array randomly and then assign each a child with css prop attached
-function createAddRandomDivs(){
-    //test lets take in an array and then return an array with the divs out of order
+//test
+function shuffleMyDivs(){
     let cardArray = Array.from(document.getElementsByClassName("card"));
     let cardArrayMutate = cardArray.slice(); //so we can mutate this one
 
-    const randomCardArray=cardArray.map(function(val,index){
+    return cardArray.map(function(val,index){
         let randomNumber = Math.floor(Math.random()*cardArrayMutate.length);
         //now we should slice it out so we dont get a copy for next element in play
         let returnThis = cardArrayMutate[randomNumber];
         cardArrayMutate.splice(randomNumber,1);
         return returnThis;
     });
+}
+//end
+//Take the node list of classes, push them into a new array randomly and then assign each a child with css prop attached
+function createAddRandomDivs(){
+
+    let randomCardArray = shuffleMyDivs();
+    console.log('work?',randomCardArray);
 
     for(var i=0;i<randomCardArray.length;i++){
     // for (var i=0;i<random_class.length;i++){ //two loops length/2
