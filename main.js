@@ -1,5 +1,5 @@
-let get_card_class = document.getElementsByClassName('card'); //collect all parent card class divs which will hold our card front and back
-let card_class_mixer=[]; //puts the 18 classes into an array
+// let get_card_class = document.getElementsByClassName('card'); //collect all parent card class divs which will hold our card front and back
+// let card_class_mixer=[]; //puts the 18 classes into an array
 let random_class=[];     //18 classes and randomly returned
 let first_card_clicked  = null;
 let second_card_clicked=null;
@@ -165,7 +165,7 @@ function resetStats(){
     match_counter = 0;
     games_played++;
     displayStats();
-    card_class_mixer=[];
+    // card_class_mixer=[];
     random_class=[];
     removeOldDivs();
 }
