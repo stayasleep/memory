@@ -28,33 +28,20 @@ function initializeGame() {
 }
 //Take the node list of classes, push them into a new array randomly and then assign each a child with css prop attached
 function createAddRandomDivs(){
-    // for (var j=0; j<get_card_class.length;j++){
-    //     var temp=get_card_class[j];
-    //     card_class_mixer.push(temp);
-    // }
     //test lets take in an array and then return an array with the divs out of order
-    const cardArray = Array.from(document.getElementsByClassName("card"));
-    //make a new copy so we dont mutare whats going on
-    const cardArrayMutate = cardArray.slice(); //lets mess this one up and return a new array
-    const randomCardArray=cardArray.map(function(val){
+    let cardArray = Array.from(document.getElementsByClassName("card"));
+    let cardArrayMutate = cardArray.slice(); //so we can mutate this one
+
+    const randomCardArray=cardArray.map(function(val,index){
         let randomNumber = Math.floor(Math.random()*cardArrayMutate.length);
         //now we should slice it out so we dont get a copy for next element in play
-        cardArrayMutate.splice(randomNumber,1); //now we will only be dealing with a smaller n smaller array each time
-        return cardArray[randomNumber];
+        let returnThis = cardArrayMutate[randomNumber];
+        cardArrayMutate.splice(randomNumber,1);
+        return returnThis;
     });
-    console.log('mutate free',randomCardArray);
 
-
-
-    //end test
-
-    //basically all cards go ina  bag, randomly assign a cards to a new array, out of order, and then below the out of order cards get childrenNodes attached
-    // for (var d=0;d<card_class_mixer.length;){
-    //     var x = Math.floor(Math.random()*card_class_mixer.length);
-    //     random_class.push(card_class_mixer[x]);
-    //     card_class_mixer.splice(x,1);
-    // }
-    for (var i=0;i<random_class.length;i++){ //two loops length/2
+    for(var i=0;i<randomCardArray.length;i++){
+    // for (var i=0;i<random_class.length;i++){ //two loops length/2
         if (i<9){
             var front_div=document.createElement("DIV");
             front_div.className="front";
@@ -62,8 +49,10 @@ function createAddRandomDivs(){
             var back_div = document.createElement("DIV");
             back_div.className="back";
             back_div.style.backgroundImage = "url('image/card_back.jpg')";
-            random_class[i].appendChild(front_div);
-            random_class[i].appendChild(back_div);
+            randomCardArray[i].appendChild(front_div);
+            randomCardArray[i].appendChild(back_div);
+            // random_class[i].appendChild(front_div);
+            // random_class[i].appendChild(back_div);
         } else {
             var z = i - 9;
             var front_div=document.createElement("DIV");
@@ -72,8 +61,10 @@ function createAddRandomDivs(){
             var back_div = document.createElement("DIV");
             back_div.className="back";
             back_div.style.backgroundImage = "url('image/card_back.jpg')";
-            random_class[i].appendChild(front_div);
-            random_class[i].appendChild(back_div);
+            randomCardArray[i].appendChild(front_div);
+            randomCardArray[i].appendChild(back_div);
+            // random_class[i].appendChild(front_div);
+            // random_class[i].appendChild(back_div);
         }
     }
 };
