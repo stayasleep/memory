@@ -1,6 +1,3 @@
-// let get_card_class = document.getElementsByClassName('card'); //collect all parent card class divs which will hold our card front and back
-// let card_class_mixer=[]; //puts the 18 classes into an array
-let random_class=[];     //18 classes and randomly returned
 let first_card_clicked  = null;
 let second_card_clicked=null;
 const total_possible_matches = 2;
@@ -22,11 +19,15 @@ function initializeGame() {
         childBack.addEventListener("click",handleClick);
     });
     document.getElementById('reset').addEventListener('click',resetGame);
-    document.getElementsByClassName('radar')[0].addEventListener('mouseover',bounceHint);
+    document.getElementsByClassName('radar')[0].addEventListener('mouseover',bounceHint); //might be able to combine this and next into one helper func
     document.getElementsByClassName("radar")[0].addEventListener("click", giveHints);
     games_played=1;
 }
-//test
+//
+/**
+ * @description - creates a new Array from an Array-like object, in this the DOM node list
+ * @return {Array} Returns an array of the card divs in a random order
+ * */
 function shuffleMyDivs(){
     let cardArray = Array.from(document.getElementsByClassName("card"));
     let cardArrayMutate = cardArray.slice(); //so we can mutate this one
@@ -39,7 +40,6 @@ function shuffleMyDivs(){
         return returnThis;
     });
 }
-//end
 //Take the node list of classes, push them into a new array randomly and then assign each a child with css prop attached
 function createAddRandomDivs(){
 
@@ -57,8 +57,6 @@ function createAddRandomDivs(){
             back_div.style.backgroundImage = "url('image/card_back.jpg')";
             randomCardArray[i].appendChild(front_div);
             randomCardArray[i].appendChild(back_div);
-            // random_class[i].appendChild(front_div);
-            // random_class[i].appendChild(back_div);
         } else {
             var z = i - 9;
             var front_div=document.createElement("DIV");
@@ -69,11 +67,9 @@ function createAddRandomDivs(){
             back_div.style.backgroundImage = "url('image/card_back.jpg')";
             randomCardArray[i].appendChild(front_div);
             randomCardArray[i].appendChild(back_div);
-            // random_class[i].appendChild(front_div);
-            // random_class[i].appendChild(back_div);
         }
     }
-};
+}
 //handlers for Back divs
 function handleClick(){
     cardClick(event);
@@ -81,12 +77,12 @@ function handleClick(){
 }
 //grabs value of current stat and places the html inside the corresponding variable, occurs with each click
 function displayStats(){
-    var element = document.querySelector(".attempts .value");
-    element.innerText=attempts;
-    var accurate = document.querySelector(".accuracy .value");
+    let element = document.querySelector(".attempts .value");
+    element.innerText=attempts.toString();
+    let accurate = document.querySelector(".accuracy .value");
     accurate.innerHTML=Math.round(accuracy*100)+"%";
-    var played = document.querySelector(".games-played .value");
-    played.innerHTML=games_played;
+    let played = document.querySelector(".games-played .value");
+    played.innerHTML=games_played.toString();
 }
 
 
@@ -171,8 +167,6 @@ function resetStats(){
     match_counter = 0;
     games_played++;
     displayStats();
-    // card_class_mixer=[];
-    random_class=[];
     removeOldDivs();
 }
 //things to happen for each game...reset stats (and board), apply dom elements, attach click
@@ -354,12 +348,21 @@ function giveHints(){
 }
 
 //helper functions
+/**
+ * @description - add one time event listeners to an element
+ * @param {Array} nodeArray - DOM element(s) to add one-time listener to
+ * @param {String} cssClass - class name to to add to element for animation
+ * @param {String} cssClass2 - class name to add to element for animation
+ **/
 function helperWithAnimation(nodeArray,cssClass,cssClass2){
     nodeArray.forEach(function(element,index){
+        console.log('element',element);
         element.classList.add(cssClass,cssClass2);
         element.addEventListener("webkitAnimationEnd",function(e){
+            console.log('type', e);
             element.removeEventListener(e.type,arguments.callee);
             element.classList.remove(cssClass,cssClass2);
         })
     });
 }
+
