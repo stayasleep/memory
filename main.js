@@ -42,12 +42,9 @@ function shuffleMyDivs(){
 }
 //Take the node list of classes, push them into a new array randomly and then assign each a child with css prop attached
 function createAddRandomDivs(){
-
     let randomCardArray = shuffleMyDivs();
-    console.log('work?',randomCardArray);
 
     for(var i=0;i<randomCardArray.length;i++){
-    // for (var i=0;i<random_class.length;i++){ //two loops length/2
         if (i<9){
             var front_div=document.createElement("DIV");
             front_div.className="front";
@@ -89,7 +86,6 @@ function displayStats(){
 //Do this for each click
 function cardClick(e){
     console.log('card',e);
-    console.log('is this same as get el by id',e.target);
     flipCard(e);
 
     if (first_card_clicked===null){
@@ -127,9 +123,6 @@ function cardClick(e){
 
                 helperWithAnimation([first_card_clicked,second_card_clicked],"animated","rotateIn");
 
-                // first_card_clicked.classList.add("rotateIn");
-                // second_card_clicked.classList.add("rotateIn");
-
                 first_card_clicked=null;
                 second_card_clicked=null;
                 resetBtn.disabled = false;
@@ -144,8 +137,8 @@ function cardClick(e){
 
 function flipCard(back){
     back.target.removeEventListener(back.type,handleClick);
-    console.log('flip called',back);
     back.target.className+=" animated rotateOut";
+
     back.target.addEventListener("webkitAnimationStart",function(e){
         console.log('started event',e);
         e.target.removeEventListener(e.type,arguments.callee);
@@ -155,7 +148,7 @@ function flipCard(back){
         //we dont want the animateend running every click, so we remove it when first invoked by target type and passing arguments of func
         back.target.removeEventListener(e.type,arguments.callee);
         back.target.classList.add("flipped");
-        back.target.addEventListener(back.type,handleClick);
+        back.target.addEventListener(back.type,handleClick); //so you dont double click before flipped shows up
     });
 }
 //Reset the board
@@ -190,13 +183,7 @@ function removeOldDivs() {
         }
     });
 }
-// var startTime = Date.now();
-// var interval = setInterval(function() {
-//     var elapsedTime = Date.now() - startTime;
-//     document.getElementById("timer").innerHTML = (elapsedTime / 1000).toFixed(2);
-// }, 100);
-//
-// timeDifference();
+
 function changePortrait(){
     var _div1 = document.createElement('DIV');
     _div1.id = 'alertBox';
@@ -303,7 +290,6 @@ function gameOutcome(str){
 }
 //bouncy time...check for mobile at the end
 function bounceHint(e){
-    console.log('moused over me',e);
     e.target.classList.add("animated","bounce");
     e.target.addEventListener("webkitAnimationEnd",function(){
         e.target.classList.remove("animated","bounce");
@@ -322,16 +308,10 @@ function giveHints(){
         avoidAlrdyMatched.some(function(sibling,index){
             if(sibling.previousSibling.style.backgroundImage===matchThis){
                 //we found the matching sibling...lets do some animoo
-                // avoidAlrdyMatched[lengthIs].classList.add("animated","tada");
-                // avoidAlrdyMatched[index].classList.add("animated","tada");
-                //test
                 let arr=[avoidAlrdyMatched[lengthIs],avoidAlrdyMatched[index]];
                 helperWithAnimation(arr,"animated","tada");
-                //test
             }
         });
-        //remember to remove the class from above once animation is donezo
-        console.log('avoid',avoidAlrdyMatched);
         //now we have index position of the matched pair and the orig, which is the last spot in array...send user a hint
     }else if(first_card_clicked && !second_card_clicked){
         //so now the first card is clicked, but the sec card is not yet clicked
@@ -343,7 +323,6 @@ function giveHints(){
            return owner.previousSibling.style.backgroundImage === firstSibClick && !owner.classList.contains("flipped");
         });
         helperWithAnimation(matchThese,"animated","tada");
-        console.log('found the two',matchThese);
     }
 }
 
