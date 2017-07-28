@@ -23,7 +23,7 @@ function initializeGame() {
     document.getElementsByClassName("radar")[0].addEventListener("click", giveHints);
     games_played=1;
 }
-//
+
 /**
  * @description - creates a new Array from an Array-like object, in this the DOM node list
  * @return {Array} Returns an array of the card divs in a random order
@@ -84,6 +84,11 @@ function displayStats(){
 
 
 //Do this for each click
+/**
+ * @name function cardClick
+ * @Param {Object} e - takes in the event object of the div that was clicked
+ * @description - handles the business logic for clicking cards by traversing the event target node and searching for the sibling element with character image in order to compare matches
+ * */
 function cardClick(e){
     console.log('card',e);
     flipCard(e);
@@ -151,7 +156,20 @@ function flipCard(back){
         back.target.addEventListener(back.type,handleClick); //so you dont double click before flipped shows up
     });
 }
-//Reset the board
+
+/**
+ * @description reset the game stats, recreate randomzied divs, and attach their clickhandlers thereafter
+ * */
+function resetGame(){
+    resetStats();
+    createAddRandomDivs();
+    Array.from(document.getElementsByClassName("back")).forEach(function(childBack){
+        childBack.addEventListener("click",handleClick);
+    });
+}
+/**
+ * @description - what we would call the state of the game that needs to reset each time user plays a new game
+ * */
 function resetStats(){
     first_card_clicked = null;
     second_card_clicked = null;
@@ -162,21 +180,11 @@ function resetStats(){
     displayStats();
     removeOldDivs();
 }
-//things to happen for each game...reset stats (and board), apply dom elements, attach click
-function resetGame(){
-    resetStats();
-    createAddRandomDivs();
-    var z=document.getElementsByClassName('back');
-    for(var i=0;i<z.length;i++){
-        z[i].addEventListener('click',handleClick);
-    }
-}
 /**
  *@name removeOldDivs
  * @description remove all children nodes of the parent while the loop remains true [deletes all card Front, then card Back]
  */
 function removeOldDivs() {
-    //remove all children from parent
     Array.from(document.getElementsByClassName("card")).forEach(function(parent){
         while(parent.firstChild){
             parent.removeChild(parent.firstChild);
@@ -208,7 +216,11 @@ function changePortrait(){
 
     document.getElementsByTagName("body")[0].appendChild(_div1);
 }
-//Modal for Win or Lose, with a button that resets the game to play again
+/**
+ * @name function gameOutcome
+ * @param {String} str - accepts a string as an argument for modal body message
+ * @description - dynamically create a modal upon game outcome
+ * */
 function gameOutcome(str){
     let modalFade = document.createElement("div");
     modalFade.className="winModal modal";
@@ -288,37 +300,37 @@ function gameOutcome(str){
     document.getElementsByTagName('body')[0].appendChild(modalFade);
 
 }
-//bouncy time...check for mobile at the end
+/**
+ * @name - function bounceHint
+ * @param {Object} e - takes in the event object for the clicked radar
+ * @description - targets the radar and attaches an event to remove animated css classes so it can continue bouncing on multiple clicks
+ * */
 function bounceHint(e){
     e.target.classList.add("animated","bounce");
     e.target.addEventListener("webkitAnimationEnd",function(){
         e.target.classList.remove("animated","bounce");
     });
 }
-
+/**
+ * @description - give hint based on if there is "no cards clicked" or "one card clicked, find its pair" based
+ * off of background image src
+ *
+ * */
 function giveHints(){
-    //case 1, no cards have been clicked yet at the start of a turn
     if(!first_card_clicked && !second_card_clicked){
         let avoidAlrdyMatched=Array.from(document.getElementsByClassName("back")).filter(function(owner,index){
             return !owner.classList.contains("matched");
         });
         let lengthIs = avoidAlrdyMatched.length-1; //get the length, use the last one to search for matches eh
         let matchThis = avoidAlrdyMatched[lengthIs].previousSibling.style.backgroundImage;
-        //we use some because we only want to run this until we find a match...not the whole way thru ..right
         avoidAlrdyMatched.some(function(sibling,index){
             if(sibling.previousSibling.style.backgroundImage===matchThis){
-                //we found the matching sibling...lets do some animoo
                 let arr=[avoidAlrdyMatched[lengthIs],avoidAlrdyMatched[index]];
                 helperWithAnimation(arr,"animated","tada");
             }
         });
-        //now we have index position of the matched pair and the orig, which is the last spot in array...send user a hint
     }else if(first_card_clicked && !second_card_clicked){
-        //so now the first card is clicked, but the sec card is not yet clicked
-        //we use the clicked card and traverse the node to find siblings backgroundImg and then match
         let firstSibClick = first_card_clicked.previousSibling.style.backgroundImage;
-
-        //one is already displayed...only the other should have some animoo. not the one displayed as well
         let matchThese=Array.from(document.getElementsByClassName("back")).filter(function(owner, index){
            return owner.previousSibling.style.backgroundImage === firstSibClick && !owner.classList.contains("flipped");
         });
@@ -326,7 +338,6 @@ function giveHints(){
     }
 }
 
-//helper functions
 /**
  * @description - add one time event listeners to an element
  * @param {Array} nodeArray - DOM element(s) to add one-time listener to
