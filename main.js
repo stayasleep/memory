@@ -260,6 +260,12 @@ function gameOutcome(str){
     button.addEventListener("click",function(){
         modalFade.classList.remove("show");
         modalFade.style.display="none";
+        Array.from(document.getElementsByClassName("winModal")).forEach(function(parent){
+            while(parent.firstChild){
+                parent.removeChild(parent.firstChild);
+            }
+            parent.remove();
+        });
     });
 
     let spanClose = document.createElement("span");
@@ -302,6 +308,12 @@ function gameOutcome(str){
     btnCancel.addEventListener("click",function(){
         modalFade.classList.remove("show");
         modalFade.style.display="none";
+        Array.from(document.getElementsByClassName("winModal")).forEach(function(parent){
+            while(parent.firstChild){
+                parent.removeChild(parent.firstChild);
+            }
+            parent.remove();
+        });
     });
     //make this cool using a fragment later on
     modalFooter.appendChild(btnSubmit);
