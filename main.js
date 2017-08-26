@@ -1,6 +1,6 @@
 let first_card_clicked  = null;
 let second_card_clicked=null;
-const total_possible_matches = 2;
+const total_possible_matches = 9;
 let match_counter=0;
 let attempts=0;
 let accuracy=0;
@@ -94,7 +94,6 @@ function displayStats(){
  * @description - handles the business logic for clicking cards by traversing the event target node and searching for the sibling element with character image in order to compare matches
  * */
 function cardClick(e){
-    console.log('card',e);
     flipCard(e);
 
     if (first_card_clicked===null){
@@ -140,7 +139,6 @@ function cardClick(e){
                     cardBack.addEventListener("click",handleClick);
                 });
             }, 2000);
-            console.log('i am waiting ');
         }
     }
 }
@@ -150,11 +148,9 @@ function flipCard(back){
     back.target.className+=" animated rotateOut";
 
     back.target.addEventListener("webkitAnimationStart",function(e){
-        console.log('started event',e);
         e.target.removeEventListener(e.type,arguments.callee);
     });
     back.target.addEventListener("webkitAnimationEnd",function(e){
-        console.log('event over',e);
         //we dont want the animateend running every click, so we remove it when first invoked by target type and passing arguments of func
         back.target.removeEventListener(e.type,arguments.callee);
         back.target.classList.add("flipped");
@@ -378,10 +374,8 @@ function giveHints(){
  **/
 function helperWithAnimation(nodeArray,cssClass,cssClass2){
     nodeArray.forEach(function(element,index){
-        console.log('element',element);
         element.classList.add(cssClass,cssClass2);
         element.addEventListener("webkitAnimationEnd",function(e){
-            console.log('type helperwithAn', e);
             element.removeEventListener(e.type,arguments.callee);
             element.classList.remove(cssClass,cssClass2);
         })
