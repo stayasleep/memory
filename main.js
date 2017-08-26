@@ -196,6 +196,12 @@ function removeOldDivs() {
             parent.removeChild(parent.firstChild);
         }
     });
+    Array.from(document.getElementsByClassName("winModal")).forEach(function(parent){
+        while(parent.firstChild){
+            parent.removeChild(parent.firstChild);
+        }
+        parent.remove();
+    });
 }
 
 function changePortrait(){

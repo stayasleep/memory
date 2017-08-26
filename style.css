@@ -32,12 +32,6 @@ body{
     color: black !important;
 }
 
-.value{
-    border-bottom: 1px dotted black;
-}
-.label{
-    color: black;
-}
 .card-container{
     display: inline-block;
     margin-top: 2em;
@@ -156,21 +150,15 @@ iframe {
     background-image: url("image/dbzheader.png");
     background-repeat: no-repeat;
     background-size: contain;
-    /*height: 100%; tonight*/
     height: 17vh;
     width: 50%;
     margin-left: 100px;
-    /*width: 100%;tonight*/
 }
 
 #alertBox{
     display: none;
 }
-.ifSmall{
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
+
 /*mobile*/
 @media only screen
     and (min-device-width: 320px)
@@ -186,9 +174,6 @@ iframe {
         /*justify-content: center;*/
         /*align-items: center;*/
     /*}*/
-    /*.sizeP{*/
-        /*padding: 0 10px;*/
-    /*}*/
 
     /*#alertBox{*/
         /*display: block;*/
@@ -199,6 +184,3 @@ iframe {
 
 
 }
-/*@media screen and (min-width: 768px){*/
-
-/*}*/
