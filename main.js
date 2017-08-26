@@ -111,7 +111,7 @@ function cardClick(e){
             first_card_clicked = null;
             second_card_clicked = null;
             if (match_counter === total_possible_matches){
-                gameOutcome("Congrats Z Warrior, You Win!");
+                gameOutcome("You Win!");
                 let winLose = document.getElementById("winOrLose");
                 winLose.style.display="block";
                 winLose.style.backgroundColor="rgba(0,0,0,0.4)";
@@ -239,7 +239,7 @@ function gameOutcome(str){
 
     let modalTitle =document.createElement("h5");
     modalTitle.className="modal-title";
-    modalTitle.innerText="Enter Info Below";
+    modalTitle.innerText="Congrats Z Warrior";
 
     let button = document.createElement("button");
     button.className="close";
@@ -256,6 +256,13 @@ function gameOutcome(str){
 
     let modalBody = document.createElement("div");
     modalBody.className="modal-body";
+
+    let vid = document.createElement("iframe");
+    vid.className = "overNine";
+    vid.setAttribute("height","315");
+    vid.setAttribute("src","https://www.youtube.com/embed/SiMHTK15Pik?autoplay=1");
+    vid.setAttribute("frameborder","1");
+    vid.setAttribute("allowfullscreen","true");
 
     let _p = document.createElement("p");
     _p.className="pModal";
@@ -288,6 +295,7 @@ function gameOutcome(str){
     modalFooter.appendChild(btnSubmit);
     modalFooter.appendChild(btnCancel);
     modalBody.appendChild(_p);
+    modalBody.appendChild(vid);
     button.appendChild(spanClose);
     modalHeader.appendChild(modalTitle);
     modalHeader.appendChild(button);
@@ -349,7 +357,7 @@ function helperWithAnimation(nodeArray,cssClass,cssClass2){
         console.log('element',element);
         element.classList.add(cssClass,cssClass2);
         element.addEventListener("webkitAnimationEnd",function(e){
-            console.log('type', e);
+            console.log('type helperwithAn', e);
             element.removeEventListener(e.type,arguments.callee);
             element.classList.remove(cssClass,cssClass2);
         })
