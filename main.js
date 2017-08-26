@@ -5,6 +5,7 @@ let match_counter=0;
 let attempts=0;
 let accuracy=0;
 let games_played=0;
+let power = 0;
 
 document.addEventListener("DOMContentLoaded",ready);
 
@@ -80,6 +81,9 @@ function displayStats(){
     accurate.innerHTML=Math.round(accuracy*100)+"%";
     let played = document.querySelector(".games-played .value");
     played.innerHTML=games_played.toString();
+    let powerLevel  = document.querySelector(".scouterText");
+    power === 9000 ? power += 1 : power;
+    powerLevel.innerHTML = power.toString();
 }
 
 
@@ -104,6 +108,7 @@ function cardClick(e){
         if (first_card === second_card){
             match_counter++;
             accuracy = match_counter/attempts;
+            power += 1000;
             //temp
             first_card_clicked.classList.add("matched");
             second_card_clicked.classList.add("matched");
@@ -173,6 +178,7 @@ function resetGame(){
 function resetStats(){
     first_card_clicked = null;
     second_card_clicked = null;
+    power = 0;
     accuracy = 0;
     attempts = 0;
     match_counter = 0;
@@ -193,23 +199,23 @@ function removeOldDivs() {
 }
 
 function changePortrait(){
-    var _div1 = document.createElement('DIV');
+    let _div1 = document.createElement('DIV');
     _div1.id = 'alertBox';
     _div1.className="modal fade in";
     _div1.setAttribute("role","dialog");
     // _div1.style.display="none";
 
-    var _div2 = document.createElement("DIV");
+    let _div2 = document.createElement("DIV");
     _div2.className="modal-dialog";
     _div1.appendChild(_div2);
 
-    var _div3 = document.createElement("DIV");
+    let _div3 = document.createElement("DIV");
     _div3.className = "modal-content checkRes";
     _div2.appendChild(_div3);
 
-    var _div4 = document.createElement("DIV");
+    let _div4 = document.createElement("DIV");
     _div4.className ="modal-body";
-    var _p=document.createElement("P");
+    let _p=document.createElement("P");
     _p.className="sizeP";
     _p.innerHTML="This game is best played on larger screen resolutions.  Please change your phone's orientation to landscape before playing DBZ Memory Match.";
     _div3.appendChild(_div4.appendChild(_p));
