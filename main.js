@@ -1,3 +1,6 @@
+/**
+ * GAME_GLOBAL_VARIABLES
+ * */
 let first_card_clicked  = null;
 let second_card_clicked=null;
 const total_possible_matches = 9;
@@ -15,7 +18,6 @@ function ready(){
 //Randomly generate the div position, attach click handlers and start game
 function initializeGame() {
     createAddRandomDivs();
-    changePortrait();
     Array.from(document.getElementsByClassName("back")).forEach(function(childBack){
         childBack.addEventListener("click",handleClick);
     });
@@ -169,6 +171,7 @@ function resetGame(){
     });
 }
 /**
+ * @name - resetStats
  * @description - what we would call the state of the game that needs to reset each time user plays a new game
  * */
 function resetStats(){
@@ -200,30 +203,6 @@ function removeOldDivs() {
     });
 }
 
-function changePortrait(){
-    let _div1 = document.createElement('DIV');
-    _div1.id = 'alertBox';
-    _div1.className="modal fade in";
-    _div1.setAttribute("role","dialog");
-    // _div1.style.display="none";
-
-    let _div2 = document.createElement("DIV");
-    _div2.className="modal-dialog";
-    _div1.appendChild(_div2);
-
-    let _div3 = document.createElement("DIV");
-    _div3.className = "modal-content checkRes";
-    _div2.appendChild(_div3);
-
-    let _div4 = document.createElement("DIV");
-    _div4.className ="modal-body";
-    let _p=document.createElement("P");
-    _p.className="sizeP";
-    _p.innerHTML="This game is best played on larger screen resolutions.  Please change your phone's orientation to landscape before playing DBZ Memory Match.";
-    _div3.appendChild(_div4.appendChild(_p));
-
-    document.getElementsByTagName("body")[0].appendChild(_div1);
-}
 /**
  * @name function gameOutcome
  * @param {String} str - accepts a string as an argument for modal body message
