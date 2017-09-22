@@ -75,7 +75,10 @@ function handleClick(){
     cardClick(event);
     displayStats();
 }
-//grabs value of current stat and places the html inside the corresponding variable, occurs with each click
+/***
+ * @name displayStats
+ * @description - finds the 4 stat variables and updates them according to the globals
+ */
 function displayStats(){
     let element = document.querySelector(".attempts .value");
     element.innerText=attempts.toString();
@@ -89,7 +92,6 @@ function displayStats(){
 }
 
 
-//Do this for each click
 /**
  * @name function cardClick
  * @Param {Object} e - takes in the event object of the div that was clicked
@@ -110,10 +112,10 @@ function cardClick(e){
             match_counter++;
             accuracy = match_counter/attempts;
             power += 1000;
-            //temp
+
             first_card_clicked.classList.add("matched");
             second_card_clicked.classList.add("matched");
-            //temp
+
             first_card_clicked = null;
             second_card_clicked = null;
             if (match_counter === total_possible_matches){
